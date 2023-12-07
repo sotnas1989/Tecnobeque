@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">    
+    <title>TECNOBEQUE - Reparación de Celulares y Venta de Equipos Electrónicos</title>
+    <link rel="stylesheet" href="CSS/styles_covers.css">
+</head>
+<body>
+    <header>    
+        
+        <img id="banner" src="IMG/banner2.jpg">
+        <h1 id="tecnobeque">TECNOBEQUE</h1>          
+        <h2>Reparación de Celulares. Venta de Accesorios para Móviles</h2>
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a class="nav__link--color-red" href="#">Covers</a></li>                
+                <li><a href="#">Reparación</a></li>
+                <li><a href="#">Contabilidad</a></li>            
+                <li><a href="mailto:eddyps1989@gmail.com">Acerca de</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <br><br>
+        <!--input type="datetime-local" name="tiempolocal"-->
+        <p>En <strong>Tecnobeque</strong> hay una amplia colección de covers tanto para celulares modernos como antiguos. 
+         Tenemos de muchísimos modelos y marcas como: <em>Iphone</em>, <em>Samsung</em>, <em>Xiaomi</em>, <em>Redmi</em>, <em>Tecnospark</em>, 
+         <em>Motorola</em>, <em>Huawei</em>, <em>LG</em>, <em>Alcatel</em>, entre otros.        
+        </p> <br>
+        <p>En caso de el cliente necesite un cover que no se encuentre disponible en nuestro catálogo, es posible 
+            encargarlo a traves de <b>WhatsApp</b>: <strong id="WhatsApp_Alain" title="Alain">+5353109194</strong> o <strong id="WhatsApp_Wilfred" title="Wilfredo">+5355427798</strong>. Es 
+            importante de que sea bien <b>específico</b> con su pedido e incluya exactamente el modelo del celular, por ejemplo: <em>Samsung A10E</em>, 
+            en el ejemplo anterior "Samsung A10<b>E</b>" note que la <b>E</b> al final no puede faltar, ya que el modelo <em>Samsung A10</em> es mas grande y 
+            por lo tanto el cover no es compatible con el <em>Samsung A10E</em>. Es responsabilidad del cliente hacer correctamente el 
+            pedido. Tambien debe especificar los colores si desea el cover para un hombre o una mujer.
+        </p> <br>
+        <h2>CATÁLOGO DE COVERS</h2> <br>        
+    </main>
+    <section>
+        <div class="colorContainer">
+            <div class="divColorAgotado" title="0 Covers"><p>Agotado</p></div>
+            <div class="divColorEscaso" title="1 a 5 Covers"><p>Escaso</p></div>
+            <div class="divColorSuficiente" title="6 a 15 Covers"><p>Suficiente</p></div>
+            <div class="divColorAbundante" title="16 a 25 Covers"><p>Abundante</p></div>
+            <div class="divColorExceso" title="Más de 26 Covers"><p>Exceso</p></div>
+        </div>         
+        <input type="file" class="archivo" accept=".csv" title="Cargue el archivo Tecnobeque/data_covers.csv"/>
+        <button class="buttonEditar">Editar</button>
+        <button class="buttonNuevo">Nuevo</button>
+        <button class="buttonEliminar">Eliminar</button>
+        <button class="buttonVaciar">Vaciar Tabla</button>
+        <button class="buttonExportar">Exportar</button>
+        <div id="divTabla">
+            <table id="tabla">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>COVER</th>
+                        <th>PRECIO (CUP)</th>
+                        <th>CANTIDAD</th>
+                        <th colspan="2">GESTIÓN</th>
+                    </tr>                    
+                </thead>                
+            </table>
+        </div> 
+        <input type="file" class="archivo" title="Cargue el archivo Tecnobeque/data_covers.csv"/>
+        <button class="buttonEditar">Editar</button>
+        <button class="buttonNuevo">Nuevo</button>
+        <button class="buttonEliminar">Eliminar</button>
+        <button class="buttonVaciar">Vaciar Tabla</button>
+        <button class="buttonExportar">Exportar</button>       
+    </section>
+
+    <footer>
+        <p><b>&copy; 2023 Eddy Pérez. All rights reserved.</b></p>
+    </footer>
+
+    <script src="SCRIPT/script_covers.js"></script>
+    <!--script src="SCRIPT/jquery-3.7.1.js"></script-->
+</body>
+</html>

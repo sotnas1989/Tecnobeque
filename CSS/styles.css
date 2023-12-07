@@ -1,0 +1,130 @@
+*{
+    font-family: Arial, Helvetica, sans-serif;
+	/*font-size: medium;*/
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+	background-color: #cccccc;
+	background-image: url("../IMG/background.jpg");
+	width: 80%; 
+	margin: 2px auto;	
+} 
+
+#banner{
+    width:  100%;
+    height: 170px;
+    border-radius: 10px; 
+	margin-top: 2px;   
+	box-shadow: rgba(0,0,150,0.8) 2px 2px 25px;
+}
+
+ #tecnobeque{	
+	margin-top: 2px;
+    font-size: 60px;	
+	color: firebrick;
+	position: relative;
+	text-align: center;
+	bottom: 120px;	
+	text-shadow:  rgb(0,0,150) 1px 1px 1px;
+}
+
+h2 {
+	font-size: 30px;
+	margin: 3px;
+	color: #023161 ;
+	font-style: italic;
+	text-align:center;
+	text-shadow:  rgb(0,0,150) 1px 1px 1px;
+}
+
+nav ul {
+    border-radius:20px;
+	padding: 0px 0px 0px 0px;	
+	clear:right ;
+	background-color: rgb(76, 76, 211);	
+	height: 30px;
+	text-align:center;
+}
+
+nav ul li {
+	display: inline; /* despliega en forma horizontal los vinculos del nav */
+	padding: 0px 20px 0px 20px;
+	height: 0px;
+	border-right: 2px solid #fff;
+	text-align:center;
+}
+
+nav ul li a {
+	color: pink;
+	text-decoration: none; /* decoracion del vinculo */
+	font-size: 24px;
+	font-weight: bold;
+	text-align:center;
+	text-shadow:  rgb(0,0,150) 1px 1px 1px;
+}
+
+.nav__link--color-red {
+	color:firebrick;
+}
+
+nav ul li a:hover {     /* uso de la pseudoclase*/
+	color: white;
+}
+
+p {
+	text-align: justify;
+}
+
+main p:first-letter {
+    color: firebrick;
+    font-size: 30px;
+    font-weight: bold;
+	text-shadow:  rgb(0,0,150) 1px 1px 1px;
+}
+
+/*#buttonEditar{
+	align-content: center;
+}*/
+
+table {
+    width: 100%;
+    border-collapse: collapse;    
+}
+
+th, td {
+    border: 3px solid rgb(2, 1, 36);    
+    padding: 5px;   
+    text-align: center;
+}
+
+/* .producto {  /* Para poner en negrita los nombres de los productos*/ /*
+	font-weight: bold;
+} */
+
+th {
+    background-color: rgba(7, 7, 7, 0.7);
+    color: white;
+    font-size: 24px;
+}
+
+tr:nth-child(even) {
+    background-color: #eee;
+}
+
+tbody tr td:nth-child(2) {
+	font-weight: bold;
+}
+
+tr:hover {
+    background-color: #aaa;
+    cursor: pointer;
+}
+
+footer p {
+	text-align: center;
+	font-size: 16px;
+	color: gray;
+	margin-top: 24px;
+}

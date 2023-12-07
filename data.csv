@@ -1,0 +1,80 @@
+0;PRODUCTO;PRECIO (CUP);DESCRIPCIÓN
+1;Cable V8;700;Cable de carga estándar. Por una punta USB y por otra V8
+2;Cable C;700;Cable de carga moderno. Por una punta USB y por otra C
+3;Cable IPHONE;700;Cable de carga para celulares IPHONE. Por una punta USB y por otra IPHONE
+4;Cable C-C;700;Cable de carga especializado. Tipo C por ambas puntas
+5;Cable Triple;1300;Cable de carga de tres puntas. Trae una punta V8, otra C y otra IPHONE
+6;Baterías AA o AAA;200(el par);Baterías de 1.5V para control remotro TV, Cajita decodificadora y otros equipos
+7;Cable HDMI;1500;Cable para conectar equipos a monitores o televisores
+8;Ventilador Grande;80 USD;Ventilador portable recargable de gran tamaño. Trae radio.
+9;Ventilador Chiquito;3000;Ventilador portable recargable
+10;HDMI DVD Player;30 USD;Reproductora de DVD con entrada a HDMI
+11;Sistema de Audio;8000;Sistema de Audio para PC
+12;Redmi A2;30000;2 Gb RAM con 32 Gb de almacenamiento interno
+13;Redmi 9A;33000;4Gb de RAM con 64Gb de Almacenamiento
+14;Redmi 10A;36000;4 Gb RAM con 64 Gb de almacenamiento interno
+15;Tecno Spark Go 2023;34000;7 Gb RAM con 64 Gb de almacenamiento interno
+16;Tecno Pop 2023;32000;4Gb RAM con 64Gb de almacenamiento interno
+17;Samsung F04;38000;8 Gb RAM con 64 Gb de almacenamiento interno
+18;Teclado Gaming Led;6000;Teclado gamer cableado con iluminación led
+19;Power Bank 10000 mA;5800;Cargador portátil
+20;Power Bank 20000 mA;9000;Cargador portátil
+21;Bocinas PC;6500;Par de Bocinas para PC o laptop. Conexión puerto de audio 3.5 mm y USB
+22;HDTV Antena;4500;Antena TV para interiores. Conexión a través de cable coaxial
+23;Mando Universal TV-Cajita-DVD;4000;Mando universal para gran variedad de equipos
+24;Soporte Carro Imantado;3000;Se coloca en el parabrisa
+25;Soporte Carro;3000;Se coloca en el espejo retrovisor
+26;Soporte Moto-Bicicleta;2500;Se coloca en el timón. Ofrece gran facilidad de rotacion
+27;Cargador Carga Rápida C-C;2500;(Sueltos: 1600 espiga y 900 cable). Cargador carga rápida de 20w que utiliza un cable tipo C-C
+28;Cargador Carga Normal;1300;Se encuentra disponible para tipo C y V8
+29;Cargador Carro Carga Rápida 1 USB;1800;
+30;Cargador Carro Carga Rápida 2 USB;2000;
+31;Cargador Carga Rápida;1700;
+32;Cable de Carga 2m V8;1500;
+33;Cable Auxiliar;800;
+34;Mouse Inalambrico TWolf;5000;Moderno mouse gamer inalámbrico con batería interna recargable a través de un puerto V8
+35;Mouse Inalambrico Verbatim;2000;Mouse inalámbrico que utiliza 2 baterías AAA
+36;Mouse Inalambrico Azul;2500;Moderno mouse inalámbrico con batería interna recargable a través de un puerto V8
+37;Mouse Cableado RGB;3000;Mouse cableado gamer RGB
+38;Extensión USB Simple;1200;
+39;Extensión USB Hub;3500;
+40;Extensión USB y tomas;6000;
+41;Audífonos Cascos Rosados;3500;
+42;Audífonos Cascos Gamers;6000;Cascos Gamer para PC-Laptop-PS4. Cuenta con el par de plug audio(verde) y microfóno(rojo). Tambien trae el adaptador para unificar ambos plug en uno solo
+43;Soporte de Laptop;5000;Base para laptop que cuenta con un ventilador de 120 mm. Se conecta vía USB
+44;Bocina Huevo;4500;
+45;Lámpara Led Grande;4000;
+46;Extensión Circular;4500;
+47;Cargador de Pilas;4500;
+48;Pilas 9V;900;
+49;SmartWatch Serie 8;5500;
+50;MicroSD 64 Gb;1800;
+51;MicroSD 32 Gb con adaptador;1300;
+52;MicroSD 32 Gb sin adaptador;1200;
+53;Gafas Bluetooth;4500;
+54;Cargador Inalámbrico Samsung;??;
+55;Popsocket Plástico con Dibujos;600;
+56;Popsocket Metalico decorado con piedras y perlas;800;
+57;Audífonos Inalámbricos I12;3000;Tiene puerto de carga de IPHONE. Duración de la carga: de 4 a 6 horas
+58;Audífonos Inalámbricos 2BOOM;3000;Tiene Puerto de Carga V8
+59;Audífonos Cascos Esponja;???;
+60;Audífono 1 Oreja (SLIDE);2800;
+61;Audífono 1 Oreja (S109);3000;
+62;OTG V8;800;Adaptador OTG de puerto V8 a USB. Permite conectar al celular varios dispositivos USB: memorias flash, mouse, teclado y otros
+63;OTG TIPO - C;800;Adaptador OTG de puerto Tipo-C a USB. Permite conectar al celular varios dispositivos USB: memorias flash, mouse, teclado y otros
+64;Adaptador Espiga Carga Blanco;500;Permite conectar a la corriente las espigas de carga de teléfonos que vienen con el sistema europeo
+65;Adaptador Espiga Negro;350;Permite conectar a la corriente las espigas de carga de teléfonos que vienen con el sistema europeo
+66;Manillas de Silicona;800;Manillas de Silicona para Smartwatch
+67;Cover Tablet Pequeño;1800;
+68;Cover Tablet Grande;2000;
+69;TV Sound Bar;50 USD;Barra de Sonido Para TV. Trae Blutooth
+70;Bocinón Blutooth;6000;
+71;Bocina Blutooth UNNO;6500;
+72;Micro SD 256 Gb;3000;Marca KINGSTONE
+73;HDD Interno 4 Tb;18000;Marca Wester Digital
+74;Led Head Lamp;3000;Lámpara led para la cabeza
+75;Luces Carro H4;???;
+76;Mobile Accessory Kit;???;Kit de Reparacion de Móviles
+77;USB Desk Fan;???;
+78;Samsung A03 Core;33500;2Gb RAM con 64Gb Almacenamiento
+79;Espiga Carga Super;2000;

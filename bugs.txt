@@ -1,0 +1,35 @@
+			Bugs encontrados
+*[Fixed]Al hacer clic en el boton "Vaciar Tabla" se vacía el localstorage y se elimina el nodo <tbody> de <table> a traves de la propiedad tabla.lastChild.remove(). Esto funciona bien la primera vez pero al presionar nuevamente el boton elimina el nodo <thead>.
+
+*Al cargar el fichero data.csv y luego de agregarse los datos al local storage, la tabla se actualiza y muestra los nuevos valores, pero el inputFile no se oculta, solo se oculta al refrescar la pagina con F5.
+
+*Al tener dos ventanas de la aplicación en el mismo navegador, al vaciar la tabla en la primera, hay que refrescar manualmente la segunda ventana para que se visualisen los nuevos cambios.
+
+*[Fixed]Al eliminar un elemento en la fila "f" de la tabla se elimina tambien del local storage el par k-v que se encuentra en la posicion f. Al visualizar los cambios, la tabla muestra "undefined" en la fila que recién eliminamos. En el diseño hicimos que las filas de la tabla coincidieran en posición con los elementos del local storage. Se corrigió localStorage[i] por localStorage[llave], logrando que no aparecieran valores undefined en la tabla, pero ahora los elementos de la tabla aparecen desorganizados
+
+*[Fixed]nextAvailableKey = llaves[llaves.length-1] + 1; Arreglar esto. Al eliminar varios elementos pudiera modificar una llave ya existente al agregar un elemento
+
+OJO: Para ordenar un array numerico: array.sort((a, b) => a - b); En caso de no poner los parámetros ordena alfabeticamente.
+
+*[Fixed] Ordenar las llaves de los covers. Como las llaves son string, definir funcion de ordenamiento personalizada.
+
+Clases CSS para la cantidad de covers:
+0 Agotado --------- red
+(0;5] Escaso ------ orangered
+(5;15] Suficiente-- forestgreen
+(15;25] Abundante-- darkcyan
+(25;+∞) Exceso ---- darkblue
+
+*[FIXED]Se necesita agregar a los botones + y - la escucha de evento click para que actualizen el valor de "CANTIDAD". Hay que hacerlo desde Javascript ya que esos botones fueron generados dinámicamente en la funcion crearTabla(), la cual construye el nodo <table>. Hay que esperar que el nodo <table> esté completamente creado y luego a través del DOM seleccionar fila a fila document.querySelectorAll("tr"); y agregar la escucha de evento. Hay que precisar bien el mejor lugar para agregar la escucha, logicamente hay que agregarlos luego de crear el nodo <table> y despues de una adición cover. O sea cada vez que se generen nuevos botones - o +.
+
+*Al vaciar las tablas se vacía todo el localStorage para ambas tablas: productos y covers. Hay que evitar que se vacíen ambas a la vez
+
+*[FIXED]En covers.html verificar el boton Editar. Seleccionando la opcion = 3. Resuelto: faltaban las sentencias break; en la instrucción switch.
+
+*Al presionar el boton Editar seleccionando numero:1 Opción: e insertando el valor 0 . La página no se autorefresca. Luego al tratar de incrementar de uno a uno la cantidad a traves del boton de incremento se duplica la fila
+
+QUIZAS: Cambiar celdas[0].textContent  por celdas[0].innerHTML
+
+*[FIXED]Caso de USO: Editar Numero=1 Opcion=3 Valor=0. Acto seguido incrementar por el boton de incremento
+
+*[FIXED]Revisar validacion del NuevoProducto()

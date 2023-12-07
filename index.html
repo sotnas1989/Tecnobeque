@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">    
+    <title>TECNOBEQUE - Reparación de Celulares y Venta de Equipos Electrónicos</title>
+    <link rel="stylesheet" href="CSS/styles.css">
+</head>
+<body>
+    <header>
+        <img id="banner" src="IMG/banner.jpg">
+        <h1 id="tecnobeque">TECNOBEQUE</h1>                     
+        <h2>Reparación de Celulares. Venta de Accesorios para Móviles</h2>
+        <nav class="nav">
+            <ul>
+                <li><a class="nav__link--color-red" href="#">Inicio</a></li>
+                <li><a href="covers.html">Covers</a></li>                
+                <li><a href="#">Reparación</a></li>
+                <li><a href="#">Contabilidad</a></li>            
+                <li><a href="mailto:eddyps1989@gmail.com">Acerca de</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <br><br>
+        <!--input type="datetime-local" name="tiempolocal"-->
+        <p>En <strong>Tecnobeque</strong> ofrecemos servicios de reparación de celulares como: puerto de carga, placa, display y batería. Todos los trabajos 
+            de reparación tienen 7 días de garantía (menos el cambio de pantalla ya que es muy suceptible a las caídas y mala manipulación).
+            Sin embargo el cliente puede probar exhaustivamente (dentro del taller) que la pantalla funciona al 100% sin límite de tiempo.
+        </p> <br>
+        <p>Hay a la venta un gran número de accesorios para móviles como: covers, micas (cristal e hidrogel), cargadores (cableados e inalambricos), microSD, 
+            OTG, popsockets.</p>
+        Además hay en oferta otros artículos electrónicos como bocinas, teclados, mouse, lámparas recargables, luces led y muchísimos 
+           más productos.
+        </p> <br>
+    </main>
+    <section>
+        <input type="file" class="archivo" accept=".csv" title="Cargue el archivo Tecnobeque/data_covers.csv"/>
+        <button class="buttonEditar">Editar</button>
+        <button class="buttonNuevo">Nuevo</button>
+        <button class="buttonEliminar">Eliminar</button>
+        <button class="buttonVaciar">Vaciar Tabla</button>
+        <button class="buttonExportar">Exportar</button>
+        <div id="divTabla">
+            <table id="tabla">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>PRODUCTO</th>
+                        <th>PRECIO (CUP)</th>
+                        <th>DESCRIPCIÓN</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <input type="file" class="archivo" accept=".csv" title="Cargue el archivo Tecnobeque/data_covers.csv"/>
+        <button class="buttonEditar">Editar</button>
+        <button class="buttonNuevo">Nuevo</button>
+        <button class="buttonEliminar">Eliminar</button>
+        <button class="buttonVaciar">Vaciar Tabla</button>
+        <button class="buttonExportar">Exportar</button>        
+    </section>
+
+    <footer>
+        <p><b>&copy; 2023 Eddy Pérez. All rights reserved.</b></p>
+    </footer>
+
+    <script src="SCRIPT/script.js"></script>
+    <!--script src="SCRIPT/jquery-3.7.1.js"></script-->
+</body>
+</html>
