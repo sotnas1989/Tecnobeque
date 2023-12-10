@@ -30,3 +30,16 @@ O de igual manera es válido
 Estructura del fichero _data.csv_ 
 
 Cada línea representa un producto y cada producto cuenta con: #, Nombre, Precio, Descripción. Cada una de las carácteristicas del producto se separa por **";"**.
+
+![data](_res/data.jpg)
+Estructura del fichero _**data.csv**_ 
+
+Cada línea representa un producto y cada producto cuenta con: #, Nombre, Precio, Descripción. Cada una de las carácteristicas del producto se separa por **";"**.
+
+Al abrir la aplicación por primera vez es necesario cargar los ficheros **data.csv** y **data_covers.csv** para cargar los datos de las páginas **index.html** y **covers.html** respectivamente.
+
+![cargar_data.csv](_res/load_data.png)
+Cargar fichero _**data.csv**_ en _**index.html**_
+
+![cargar_data.csv](_res/load_data_covers.png)
+Cargar fichero _**data_covers.csv**_ en _**index.html**_
