@@ -33,3 +33,7 @@ QUIZAS: Cambiar celdas[0].textContent  por celdas[0].innerHTML
 *[FIXED]Caso de USO: Editar Numero=1 Opcion=3 Valor=0. Acto seguido incrementar por el boton de incremento
 
 *[FIXED]Revisar validacion del NuevoProducto()
+
+*Evitar que el usuario pueda teclar números negativos o números mayores que el maximo establecido.
+	- Evitar que el usuario pueda insertar valores en los inputs: inversion y Ganancia que sean mayores al valor del input precio
+*Al seleccionar una opcion de autocompletado en el nombre de producto, el fondo del input se cambia a color blanco

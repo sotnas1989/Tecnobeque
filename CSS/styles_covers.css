@@ -12,27 +12,39 @@ body {
 	margin: 2px auto;	
 } 
 
-#banner{
-    width:  100%;
+.container_banner {
+	width:  100%;
     height: 170px;
-    border-radius: 10px; 
-	margin-top: 2px;   
-	box-shadow: rgba(0,0,150,0.8) 2px 2px 25px;
+    
+	position: relative;
 }
 
- #tecnobeque{	
-	margin-top: 2px;
-    font-size: 60px;	
+.banner_img { 
+	width: 100%;   	   
+	height: 100%;
+	border-radius: 10px;
+	box-shadow: rgba(0,0,150,0.8) 2px 2px 25px;
+	/* position: absolute; */
+}
+
+ .banner_text {		
+    font-size: 60px;
+	max-width: 100%;	
+	width: fit-content;
+	height: fit-content;
 	color: firebrick;
-	position: relative;
+	position: absolute;
+	inset: 0;
+	margin: auto;
 	text-align: center;
-	bottom: 120px;	
+	overflow: hidden;
+	text-overflow: ellipsis;	
 	text-shadow:  rgb(0,0,150) 1px 1px 1px;
 }
 
 h2 {
 	font-size: 30px;
-	margin: 3px;
+	margin: 10px 0;
 	color: #023161 ;
 	font-style: italic;
 	text-align:center;
@@ -42,18 +54,19 @@ h2 {
 nav ul {
     border-radius:20px;
 	padding: 0px 0px 0px 0px;	
-	clear:right ;
 	background-color: rgb(76, 76, 211);	
-	height: 30px;
 	text-align:center;
 }
 
 nav ul li {
 	display: inline; /* despliega en forma horizontal los vinculos del nav */
-	padding: 0px 20px 0px 20px;
-	height: 0px;
+	padding: 0px 20px 0px 20px;	
 	border-right: 2px solid #fff;
 	text-align:center;
+}
+
+nav ul li:last-child {
+	border-right: none; /* Elimina el separador a la derecha del "Acerca de" */	
 }
 
 nav ul li a {
@@ -75,6 +88,7 @@ nav ul li a:hover {     /* uso de la pseudoclase*/
 
 p {
 	text-align: justify;
+	letter-spacing: 1px;
 }
 
 main p:first-letter {
