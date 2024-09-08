@@ -1,47 +1,50 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="UTF-8">    
+    <meta charset="UTF-8">
     <title>TECNOBEQUE - Reparación de Celulares y Venta de Equipos Electrónicos</title>
-    <link rel="stylesheet" href="CSS/styles_contabilidad.css">
+    <link rel="stylesheet" href="./CSS/styles_contabilidad.css">
 </head>
+
 <body>
     <header>
         <div class="container_banner">
-            <img  class="banner_img" src="IMG/banner2.jpg">
+            <img class="banner_img" src="IMG/banner2.jpg">
             <h1 class="banner_text">TECNOBEQUE</h1>
-        </div>                             
+        </div>
         <h2>Reparación de Celulares. Venta de Accesorios para Móviles</h2>
         <nav class="nav">
             <ul>
                 <li><a href="index.html">Inicio</a></li>
-                <li><a href="covers.html">Covers</a></li>                
+                <li><a href="covers.html">Covers</a></li>
                 <li><a href="#">Reparación</a></li>
-                <li><a class="nav__link--color-red" href="#">Contabilidad</a></li>            
+                <li><a class="nav__link--color-red" href="#">Contabilidad</a></li>
                 <li><a href="mailto:eddyps1989@gmail.com">Acerca de</a></li>
             </ul>
         </nav>
     </header>    
     <section class="sction_input">
         <div class="encabezado">
-            <h2>CUADRE</h2>
+            <h2>VENTAS Y SERVICIOS</h2>
             <input type="date" class="input_date">
-        </div>        
-        <div class="ventas">
-            <!--Lista de productos vendidos-->
+        </div>
+        <!--Lista de productos y servicios-->
+        <div class="ventas">            
             <div class="producto">
                 <input type="text" class="nombre_producto" name="nombre_producto" placeholder="Producto">
                 <input type="number" class="precio_producto" name="precio_producto" placeholder="Precio" min="0">
                 <input type="number" class="inversion_producto" name="inversion_producto" placeholder="Inversión" min="0" disabled>
-                <input type="number" class="ganancia_producto" name="ganancia_producto" placeholder="Ganancia" min="0" disabled>
+                <input type="number" class="ganancia_producto" name="ganancia_producto" placeholder="Ganancia" min="0" disabled>                
             </div>            
         </div>
         <div class="botones">
-            <button id="btn_agregar" title="Agregar nuevo producto en nueva fila">Agregar Producto</button>
-            <button id="btn_eliminar" title="Eliminar última fila de productos">Eliminar Producto</button>
+            <button id="btn_agregar_prod" title="Agregar nuevo producto en nueva fila">Agregar Producto</button>
+            <button id="btn_agregar_serv" title="Agregar nuevo servicio: configurar, instalar, arreglar, etc">Agregar Servicio</button>
+            <button id="btn_eliminar" title="Eliminar última fila de la lista productos y servicios">Eliminar</button>
             <button id="btn_calcular" title="Calcular Cuadre">Calcular</button>
-        </div>        
-         <div class="gastos">
+        </div>
+        <div class="gastos">
             <div class="renta">
                 <input type="checkbox" id="cbx_renta" name="cbx_renta">
                 <label for="cbx_renta">Renta:</label>
@@ -57,25 +60,40 @@
                 <label for="cbx_salario">Salarios:</label>
                 <input type="number" id="inpt_salario" name="inpt_salario" min="0" disabled>
             </div>
-            <div class="otros_gastos">
+            <div class="otros_gastos" title="Se incluyen gastos inesperados como devoluciones, multas, etc">
                 <input type="checkbox" id="cbx_otros_gastos" name="cbx_otros_gastos">
                 <label for="cbx_otros_gastos">Otros gastos:</label>
                 <input type="number" id="inpt_otros_gastos" name="inpt_otros_gastos" min="0" disabled>
             </div>
-         </div>    
+        </div>
     </section>
-    <section class="sction_output" >
-        <h2>RESULTADO DD/MM/AA</h2>
-        <p class="total_inversion">Inversión: </p>
-        <p class="total_ganancia">Ganancia: </p>
-        <button id="btn_limpiar" title="Borrar Cálculos">Limpiar</button>
-        <button id="btn_imprimir" title="Imprimir en PDF">Imprimir</button>
+    <!-- Pequeña ventana (popover) para validar los datos -->
+    <div id="my-popover" popover>
+        <h3>¡Faltan valores por llenar!</h2>
+        <p><br>Hay productos o servicios con información incompleta.</p>
+        <button id="btn_cerrar" popovertarget="my-popover" popovertargetaction="hide">Cerrar</button>
+    </div>
+    <!-- <button popovertarget="my-popover">Mostrar Popover</button> -->
+    <!-- Seccion para visualizar los valores calculados -->
+    <section class="sction_output">
+        <h2>CUADRE DD/MM/AA</h2>
+        <p class="total_dinero">TOTAL EN CASH:<span>0</span></p>
+        <p class="total_inversion">Total Inversión:<span>0</span></p>
+        <p class="total_ganancia">Total Ganancia:<span>0</span></p>        
+        <p class="p_aplic_gasto">Aplicando Gastos...</p>        
+        <p class="inversion">INVERSIÓN: <span>0</span></p>
+        <p class="ganancia">GANANCIA: <span>0</span></p>        
+        <div class="botones_output">
+            <button id="btn_limpiar" title="Borrar TODA la información" onclick="location.reload()">Limpiar</button>
+            <button id="btn_imprimir" title="Imprimir en PDF">Imprimir</button>
+        </div>
     </section>
 
     <footer>
         <p><b>&copy; 2024 Eddy Pérez. All rights reserved.</b></p>
     </footer>
 
-    <script src="SCRIPT/script_contabilidad.js"></script>    
+    <script src="./SCRIPT/script_contabilidad.js"></script>
 </body>
+
 </html>

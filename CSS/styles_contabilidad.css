@@ -11,7 +11,7 @@ body {
 	background-image: url("../IMG/background.jpg");
 	width: 80%; 
 	margin: 2px auto;	
-	font-size: 16px;
+	font-size: 16px;	
 } 
 
 .container_banner {
@@ -92,18 +92,22 @@ p {
 	letter-spacing: 1px;
 }
 
+.sction_input .ventas {
+	flex-direction: column; /* Para que solo haya un producto o servicio por fila */
+	
+}
+
 .sction_input div {
 	box-sizing: border-box;	
-	outline: 1px solid #686666;
+	/* outline: 1px solid #686666; */
 	border-radius: 5px;
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
-	padding: 10px;
+	padding: 5px;
 	gap: 10px;
-
 }
 
 .input_date {
@@ -132,11 +136,11 @@ p {
 	
 }
 
-.sction_input h2 {
+.sction_input h2, .sction_output h2 {
 	font-style: normal;
 }
 
-.botones button {
+.botones button, .sction_output button {
 	padding: 10px;
 	border: none;	
 	border-radius: 10px;
@@ -144,23 +148,22 @@ p {
 	font-weight: 600;	
 }
 
-.botones button:hover {
+.botones button:hover, .sction_output button:hover, #btn_cerrar:hover {
 	color: #fff;
 	border-radius: 20px;
 }
 
-#btn_agregar {
+#btn_agregar_prod, #btn_agregar_serv, #btn_imprimir {
 	background: rgb(16, 132, 240, .7);
 	
 }
 
-#btn_eliminar {
-	background: rgb(252, 83, 83, .7);
+#btn_eliminar, #btn_limpiar, #btn_cerrar {
+	background: rgb(252, 83, 83, .7);	
 }
 
 #btn_calcular {
-	background: rgb(9, 224, 9, 0.702);
-}
+	background: rgb(9, 224, 9, 0.702);}
 
 input[type="number"]:not(.nombre_producto) {
 	font-size: medium;
@@ -168,7 +171,7 @@ input[type="number"]:not(.nombre_producto) {
 	width: 90px;
 }
 
-.nombre_producto {
+.nombre_producto, .nombre_servicio {
 	font-size: medium;
 	text-align: center;
 }
@@ -193,6 +196,86 @@ input[type="number"], input[type="text"] {
 	outline: 1px solid #686666;
 }
 
+/* Clase que indica los inputs number con informacion vacía */
+input.incompleto {
+	background: #ee0808b6;
+}
+
+input.incompleto::placeholder {	
+	color: #fff;
+}
+
+#my-popover {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 0.25rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    color: #212529;
+    font-size: 1rem;
+    max-width: 276px;
+    padding: 1rem;
+	/* position: absolute; */
+    z-index: 1000;	
+	text-align: center;
+	margin: auto;	
+}
+
+#my-popover::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+    /* backdrop-filter: blur(2px); */
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;	
+    z-index: 999;	
+}
+
+#btn_cerrar {
+	padding: 10px;
+	border: none;	
+	border-radius: 10px;
+	font-size: medium;
+	font-weight: 400;
+	text-align: justify;
+	display: block;
+	margin: 10px auto;
+}
+
+.sction_output p {
+	font-weight: 600;
+	font-size: larger;	
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 10px;
+}
+
+.sction_output p span {
+	font-size: xx-large;
+	margin-left: 10px;
+}
+
+.inversion span {
+	color: rgb(60, 9, 245);
+}
+
+.ganancia span {
+	color: #095e06;
+}
+
+.p_aplic_gasto {	
+	color: firebrick;
+}
+
+.botones_output {
+	padding: 10px;	
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	gap: 20px;
+	/* outline: 1px solid; */
+}
 
 footer p {
 	text-align: center;
