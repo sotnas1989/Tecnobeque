@@ -398,5 +398,122 @@ document.addEventListener("DOMContentLoaded", () => {
         body.removeChild(btn); // Se elimina para que no acumule botones repetidos
     }    
 
+    // Generando REPORTE en PDF
+    const btnImprimir = document.getElementById("btn_imprimir");
+    btnImprimir.addEventListener("click", (ev)=> {
+        generarPDF();
+    });
+
+    /**
+     * Genera un pdf con el reporte del cuadre del día. El documento 
+     * generado se guarda en la carpeta "Descargas" del navegador
+     */
+    async function generarPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        escribeLineaALinea(doc);
+        // Creando nombre del PDF con fecha actual
+        const h2Resultado = document.querySelector(".sction_output h2");
+        // Usando regex para sustituir / por -        
+        let nombrePDF = h2Resultado.textContent.replace(/[/]/g, '-') + ".pdf";        
+        doc.save(nombrePDF); // El pdf se crea en la capeta de descargas
+    }
+
+    /**
+     * A partir de un objeto jsPDF escribe linea a linea el reporte 
+     * del cuadre del día
+     * @param {jsPDF} pdf Objeto que representa el flujo de escritura sobre
+     * el pdf
+     */
+    function escribeLineaALinea(pdf) {
+        let x = 75; // Coordenada horizontal del texto a escribir
+        let y = 10; // Coordenada vertical del texto a escribir
+        let dy = 8; // Separación entre lineas
+        // Imprimiendo SALIDA
+        const salida = document.querySelectorAll(".sction_output h2, .sction_output p");
+        for (const linea of salida) {            
+            pdf.setFontSize(12);
+            pdf.setFont("helvetica", "normal");
+            pdf.setTextColor("#000000"); // Texto en negro
+            let texto = linea.textContent;
+            if(texto.includes("CUADRE"))
+            {
+                pdf.setFontSize(18);
+                pdf.setFont("helvetica", "bold");
+                pdf.setTextColor("#023161"); // texto en azul
+            }
+            else if(texto.includes("Aplicando Gastos"))
+            {
+                pdf.setTextColor("#b22222"); // Texto en rojo
+            }
+            else if(texto.includes("INVERSIÓN"))
+            {
+                pdf.setTextColor("#3c09f5"); // Texto en azul
+            }
+            else if(texto.includes("GANANCIA"))
+            {
+                pdf.setTextColor("#095e06"); // Texto en verde
+            }
+            if(texto.includes("TOTAL EN CASH") || texto.includes("Aplicando Gastos") || texto.includes("INVERSIÓN"))  y+=dy; // Separando lineas. Dejando linea en blanco. 
+            pdf.text(linea.textContent, x, y+=dy);            
+        }
+        // Imprimiendo Lista de VENTAS Y SERVICIOS
+        y+=dy; // Dejando espacio
+        x = 20; // Para escribir alineado a la izquierda
+        const ventas = document.querySelectorAll(".ventas div"); // productos y servicios(se excluye el <datalist>)
+        let tableBody = []; // Almacena productos y servicios para luego visualizarlos en tabla        
+        for (const elto of ventas) {
+            if(elto.classList.contains("producto")) { // Si es un producto
+                agregarFilaProducto(elto);
+            }
+            else if(elto.classList.contains("servicio")) {
+                agregarFilaServicio(elto);
+            }
+        }
+        // Imprimiendo en formato de tabla
+        y += dy; // Posicionando coordenada 'y' de la tabla
+        pdf.autoTable({
+            startY: y,
+            head: [ ['Producto o Servicio', 'Precio', 'Inversión', 'Ganancia']],
+            body: tableBody
+        });
+        y = pdf.lastAutoTable.finalY + 2*dy; // Dejando 2 líneas luego de la anterior tabla    
+        // Construyendo TABLA DE GASTOS
+        tableBody = []; // Reset datos antes de agregar nuevos valores
+        const gastos = document.querySelectorAll(".gastos div");
+        for (const elto of gastos) {
+            const checkBox = elto.querySelector("input[type='checkbox']");
+            if(!checkBox.checked) continue;
+            const label = elto.querySelector("label");
+            let nombre = label.textContent;
+            nombre = nombre.substring(0, nombre.length-1); // Elimina los : del texto
+            const costo = elto.querySelector("input[type='number']");
+            let valor = costo.value;
+            if(valor === '') continue; // Costo no definido. Pasar al proximo
+            tableBody.push([nombre, valor]); // Agregando fila
+        }
+        // Imprimiendo formato tabla gastos
+        pdf.autoTable({
+            startY: y,
+            head: [['Gasto', 'Costo']],
+            body: tableBody
+        });
+
+        function agregarFilaProducto(prod) {
+            const inputNombre = prod.querySelector(".nombre_producto");
+            const inputPrecio = prod.querySelector(".precio_producto");
+            const inputInversion = prod.querySelector(".inversion_producto");
+            const inputGanancia = prod.querySelector(".ganancia_producto");
+            tableBody.push([inputNombre.value, inputPrecio.value, inputInversion.value, inputGanancia.value]);
+        }
+
+        function agregarFilaServicio(serv) {
+            const inputNombre = serv.querySelector(".nombre_servicio");
+            const inputPrecio = serv.querySelector(".precio_servicio");
+            tableBody.push([inputNombre.value, inputPrecio.value]);
+        }        
+    }
+    
+
 
 });

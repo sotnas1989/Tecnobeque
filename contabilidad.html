@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <title>TECNOBEQUE - Reparación de Celulares y Venta de Equipos Electrónicos</title>
     <link rel="stylesheet" href="./CSS/styles_contabilidad.css">
+    <!--Agregando API jsPDF para el trabajo con documentos PDF-->
+    <script src="./SCRIPT/jspdf.umd.min.js"></script>
+    <script src="./SCRIPT/jspdf.plugin.autotable.min.js"></script>
 </head>
 
 <body>
@@ -18,7 +21,7 @@
             <ul>
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="covers.html">Covers</a></li>
-                <li><a href="#">Reparación</a></li>
+                <li><a href="javascript:void(0);">Reparación</a></li>
                 <li><a class="nav__link--color-red" href="#">Contabilidad</a></li>
                 <li><a href="mailto:eddyps1989@gmail.com">Acerca de</a></li>
             </ul>
@@ -77,15 +80,15 @@
     <!-- Seccion para visualizar los valores calculados -->
     <section class="sction_output">
         <h2>CUADRE DD/MM/AA</h2>
-        <p class="total_dinero">TOTAL EN CASH:<span>0</span></p>
-        <p class="total_inversion">Total Inversión:<span>0</span></p>
-        <p class="total_ganancia">Total Ganancia:<span>0</span></p>        
+        <p class="total_dinero">TOTAL EN CASH: <span>0</span></p>
+        <p class="total_inversion">Total Inversión: <span>0</span></p>
+        <p class="total_ganancia">Total Ganancia: <span>0</span></p>        
         <p class="p_aplic_gasto">Aplicando Gastos...</p>        
         <p class="inversion">INVERSIÓN: <span>0</span></p>
         <p class="ganancia">GANANCIA: <span>0</span></p>        
         <div class="botones_output">
             <button id="btn_limpiar" title="Borrar TODA la información" onclick="location.reload()">Limpiar</button>
-            <button id="btn_imprimir" title="Imprimir en PDF">Imprimir</button>
+            <button id="btn_imprimir" title="Guarda en PDF la información en pantalla">Imprimir</button>
         </div>
     </section>
 

@@ -41,15 +41,15 @@ QUIZAS: Cambiar celdas[0].textContent  por celdas[0].innerHTML
 *[FIXED] Al cargar la pagina el input type date muesta un día por delante del dia de hoy. Sin embargo al hacerle click y seleccionar el boton "Hoy" se muestra correctamente
 *[FIXED] El datalist funciona solo para el elemento por defecto. Para que funcione para los otros hay que agregar el datalist cada vez que se agregue un new elto.
 *[FIXED] Al agregar un nuevo producto se le agrega como hijo el <datalist>, pero se desagrega del anterior, no pueden haber nodos repetidos. Siempre se queda en el último. El problema es que al eliminar nodo, se elimina tambien el datalist y los restantes productos pierden las opciones.
-* Destacar los inputs que falten valores cambiandoles el background a color rojo. Al rellenarlo volver a su background original
+* [OK]Destacar los inputs que falten valores cambiandoles el background a color rojo. Al rellenarlo volver a su background original
 *[FIXED]Evitar que el usuario borre toda la información tecleada por accidente, ya sea al refrescar la página o al hacer click en el botón Limpiar. Capturar el evento y pedir confirmacion (prompt).
 * [FIXED]Falta funcionalidad agregar servicio.
 * [FIXED]Validar input servicio para que no tome valores negativos
 * [FIXED]Evitar que al tener productos y servicios en la lista, el contador que aparece en el placeholder del input nombre de los productos mostrará valores erroneos. 
 * [FIXED]Re-implementar el boton "Calcular", teniendo en cuenta la aparición del servicio.
 * [FIXED]Diferenciar(agregar .incompleto) las inputs vacias luego de mandar a calcular.
-* Boton IMPRIMIR. Agregar guardad como PDF.
+*[OK] Boton IMPRIMIR. Agregar guardad como PDF.
 * Agregar agregar al localStorage los records de ganancia/inversion diario. Para poder visualizarlos en una gráfica y sacar el promedio de ganancia.
-
-
+* [OK]Agregar tabla de productos y servicios al PDF.
+* Agregar validacion para que antes de IMPRIMIR pdf, se haya calculado correctamente el cuadre
 

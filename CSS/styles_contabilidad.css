@@ -257,7 +257,7 @@ input.incompleto::placeholder {
 }
 
 .inversion span {
-	color: rgb(60, 9, 245);
+	color: #3c09f5;
 }
 
 .ganancia span {
@@ -265,7 +265,7 @@ input.incompleto::placeholder {
 }
 
 .p_aplic_gasto {	
-	color: firebrick;
+	color: #b22222;	
 }
 
 .botones_output {
