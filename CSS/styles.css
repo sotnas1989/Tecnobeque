@@ -121,7 +121,7 @@ th, td {
 th {
     background-color: rgba(7, 7, 7, 0.7);
     color: white;
-    font-size: 24px;
+    font-size: 1.3rem;
 }
 
 tr:nth-child(even) {

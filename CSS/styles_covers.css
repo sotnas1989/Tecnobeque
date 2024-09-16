@@ -105,6 +105,8 @@ main h2 {
 .colorContainer {
 	display: flex;
 	flex-direction: row-reverse;
+	flex-wrap: wrap;
+	gap: 5px;
 }
 
 .colorContainer div {	/* Se aplica a todos los div de colores asociados a la cantidad de covers */
@@ -159,7 +161,7 @@ th, td {
 th {
     background-color: rgba(7, 7, 7, 0.7);
     color: white;
-    font-size: 24px;
+    font-size: 1rem;
 }
 
 tr:nth-child(even) {

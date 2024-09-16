@@ -51,5 +51,5 @@ QUIZAS: Cambiar celdas[0].textContent  por celdas[0].innerHTML
 *[OK] Boton IMPRIMIR. Agregar guardad como PDF.
 * Agregar agregar al localStorage los records de ganancia/inversion diario. Para poder visualizarlos en una gráfica y sacar el promedio de ganancia.
 * [OK]Agregar tabla de productos y servicios al PDF.
-* Agregar validacion para que antes de IMPRIMIR pdf, se haya calculado correctamente el cuadre
+*[YA SE VALIDA EN EL BOTON CALCULAR] Agregar validacion para que antes de IMPRIMIR pdf, se haya calculado correctamente el cuadre
 

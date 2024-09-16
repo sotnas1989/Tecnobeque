@@ -30,57 +30,26 @@ function crearTabla()
 {        
     if(localStorage.getItem("0") === null) // Si el localStorage no tiene los datos de los productos
     {
-        console.log("Local storage sin datos de productos!\n llaves[]: " + llaves);
+        console.log(`Local storage sin datos de productos!\n llaves[]: ${llaves}`);
         return; // Termina la ejecución. Sin datos no tiene sentido hacer mas
     }
-
-    let tabla = '<table id="tabla">';
-    let fila;    
-    for (let i = 0; i < llaves.length; i++) // Recoriendo las llaves[]
-     {
-        fila = llaves[i];
-        if (fila === 0) 
+    const tabla = document.getElementById("tabla");
+    const tBody = document.createElement("tbody");
+    // Recorriendo las llaves 
+    for (let i = 1; i < llaves.length; i++) // Se empieza en 1 porque el 0 es el th
+    {
+        let fila = llaves[i];
+        const celdasFila = localStorage[fila].split(';');  // Acediendo a todas las celdas de la fila
+        const tr = document.createElement("tr");
+        for (let rowCell = 0; rowCell < celdasFila.length; rowCell++)
         {
-            tabla += '<thead>';
-            tabla += '<tr>';
-        } 
-        else 
-        {
-            tabla += '<tr>';
-        }        
-        const celdasFila = localStorage[fila].split(';');  // Acediendo a todas las celdas de la fila "fila"
-        for (let rowCell = 0; rowCell < celdasFila.length; rowCell++) 
-        {
-            if (fila === 0)
-            {
-                tabla += '<th>';
-                if(rowCell === 0) tabla += '#'; // Para que en la celda [0;0] ponga # y  no 0.
-                else tabla += celdasFila[rowCell];
-                tabla += '</th>';
-            }         
-            else
-            {
-                /*if(rowCell===1) tabla += '<td class="producto">'; // para luego mediante CSS poner en negrita los nombres de los productos
-                else*/ tabla += '<td>';               
-                tabla += celdasFila[rowCell];                
-                tabla += '</td>';
-            }
+            const td = document.createElement("td"); // Create new cell
+            td.textContent = celdasFila[rowCell];
+            tr.appendChild(td); // Adding cell to row
         }
-        if (fila === 0)
-        {
-            tabla += '</tr>';
-            tabla += '</thead>';
-            tabla += '<tbody>';
-        }
-        else
-        {
-            tabla += '</tr>';
-        }
-    } 
-        tabla += '</tbody>';
-        tabla += '</table>';
-        document.querySelector('#divTabla').innerHTML = tabla;
-        // if(localStorage.length === 0) saveToLocalStorage(data); // Llenando local storage por primera vez con el contenido del fichero data.csv       
+        tBody.appendChild(tr); // Agregando row
+    }
+    tabla.appendChild(tBody); // Agregando tbody a la la tabla        
 }
 
 function leerFichero(evt) 
