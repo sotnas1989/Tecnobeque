@@ -137,6 +137,92 @@ tr:hover {
     cursor: pointer;
 }
 
+/* Estilando MODAL PRODUCTO */
+#modalProducto {
+	background-color: #f8f9fa;
+	border: 1px solid #e9ecef;
+	border-radius: 0.25rem;
+	box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+	color: #212529;
+	font-size: 1rem;
+	/* max-width: 400px; */
+	padding: 1rem;
+	position: fixed;
+	margin: auto;
+	z-index: 1000;
+	width: 70%;
+}
+
+#modalProducto::backdrop {
+	background-color: rgba(0, 0, 0, 0.5);	
+    z-index: 999;
+}
+
+#modalProducto div {
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 10px;
+	padding: 3px;
+}
+
+#modalProducto div.btnContMod {
+	display: flex;
+	justify-content: space-evenly;
+}
+
+#modalProducto input {
+	background: #f1ffbf;
+	padding: 3px;
+	outline: 1px solid #686666;
+	border: none;
+	border-radius: 5px;
+	font-size: medium;
+	text-align: center;	
+}
+
+#precProdModal {
+	width: 90px;
+	/* flex: 1; */
+	flex-grow: 0;
+}
+
+#nombProdModal {
+	flex: 3;
+}
+
+#descrProdModal {
+	flex: 6;
+}
+
+#modalProducto button {
+	padding: 10px;
+	margin-top: 10px;
+	border: none;	
+	border-radius: 10px;
+	font-size: medium;
+	font-weight: 600;
+}
+
+#modalProducto button:hover {
+	color: #fff;
+	border-radius: 20px;	
+}
+
+#btnAceptarMod, #btnCancelarMod {
+	background: rgb(16, 132, 240, .7);
+}
+
+#btnEliminarMod {
+	background: rgb(252, 83, 83, .7);
+}
+
+
+
+
+
 footer p {
 	text-align: center;
 	font-size: 16px;

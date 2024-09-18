@@ -38,9 +38,9 @@ function crearTabla()
     // Recorriendo las llaves 
     for (let i = 1; i < llaves.length; i++) // Se empieza en 1 porque el 0 es el th
     {
-        let fila = llaves[i];
-        const celdasFila = localStorage[fila].split(';');  // Acediendo a todas las celdas de la fila
-        const tr = document.createElement("tr");
+        let key = llaves[i];
+        const celdasFila = localStorage[key].split(';');  // Acediendo a todas las celdas de la fila
+        const tr = document.createElement("tr"); // Creando elemento row
         for (let rowCell = 0; rowCell < celdasFila.length; rowCell++)
         {
             const td = document.createElement("td"); // Create new cell

@@ -62,6 +62,29 @@
         <button class="buttonVaciar">Vaciar Tabla</button>
         <button class="buttonExportar">Exportar</button>        
     </section>
+    <button id="abrirModal">Abrir Modal</button>
+    <dialog id="modalProducto">
+        <h2>Editar Producto</h2>
+        <div class="productoMod">
+            <input type="text" name="nombProdModal" id="nombProdModal" placeholder="Producto">
+            <input type="text" name="precProdModal" id="precProdModal" placeholder="Precio">
+            <input type="text" name="descrProdModal" id="descrProdModal" placeholder="Descripcion">
+        </div>
+        <div class="btnContMod">
+            <button id="btnEliminarMod">Eliminar</button>
+            <button id="btnCancelarMod">Cancelar</button>
+            <button id="btnAceptarMod">Aceptar</button>                        
+        </div>
+        
+    </dialog>
+    <script>
+        window.abrirModal.addEventListener('click', ()=> {
+            window.modalProducto.showModal();
+        });
+        window.btnCancelarMod.addEventListener('click', ()=> {
+            window.modalProducto.close();
+        });
+    </script>
 
     <footer>
         <p><b>&copy; 2023 Eddy Pérez. All rights reserved.</b></p>
