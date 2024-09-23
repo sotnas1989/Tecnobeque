@@ -32,15 +32,13 @@
         </p> <br>
         <p>Hay a la venta un gran número de accesorios para móviles como: covers, micas (cristal e hidrogel), cargadores (cableados e inalambricos), microSD, 
             OTG, popsockets.</p>
-        Además hay en oferta otros artículos electrónicos como bocinas, teclados, mouse, lámparas recargables, luces led y muchísimos 
+        <p>Además hay en oferta otros artículos electrónicos como bocinas, teclados, mouse, lámparas recargables, luces led y muchísimos 
            más productos.
         </p> <br>
     </main>
     <section>
-        <input type="file" class="archivo" accept=".csv" title="Cargue el archivo Tecnobeque/data_covers.csv"/>
-        <button class="buttonEditar">Editar</button>
-        <button class="buttonNuevo">Nuevo</button>
-        <button class="buttonEliminar">Eliminar</button>
+        <input type="file" class="archivo" accept=".csv" title="Cargue el archivo Tecnobeque/data_covers.csv"/>        
+        <button class="buttonNuevo">Nuevo</button>        
         <button class="buttonVaciar">Vaciar Tabla</button>
         <button class="buttonExportar">Exportar</button>
         <div id="divTabla">
@@ -55,42 +53,40 @@
                 </thead>
             </table>
         </div>
-        <input type="file" class="archivo" accept=".csv" title="Cargue el archivo Tecnobeque/data_covers.csv"/>
-        <button class="buttonEditar">Editar</button>
-        <button class="buttonNuevo">Nuevo</button>
-        <button class="buttonEliminar">Eliminar</button>
+        <input type="file" class="archivo" accept=".csv" title="Cargue el archivo Tecnobeque/data_covers.csv"/>        
+        <button class="buttonNuevo">Nuevo</button>        
         <button class="buttonVaciar">Vaciar Tabla</button>
         <button class="buttonExportar">Exportar</button>        
-    </section>
-    <button id="abrirModal">Abrir Modal</button>
-    <dialog id="modalProducto">
+    </section>    
+    <dialog id="modalEditProd">
         <h2>Editar Producto</h2>
-        <div class="productoMod">
-            <input type="text" name="nombProdModal" id="nombProdModal" placeholder="Producto">
-            <input type="text" name="precProdModal" id="precProdModal" placeholder="Precio">
-            <input type="text" name="descrProdModal" id="descrProdModal" placeholder="Descripcion">
+        <div class="divProdMod">
+            <input type="text" id="nombProdModalEdit" placeholder="Producto" autocomplete="off">
+            <input type="text" id="precProdModalEdit" placeholder="Precio" autocomplete="off">
+            <input type="text" id="descrProdModalEdit" placeholder="Descripcion" autocomplete="off">
         </div>
         <div class="btnContMod">
-            <button id="btnEliminarMod">Eliminar</button>
-            <button id="btnCancelarMod">Cancelar</button>
-            <button id="btnAceptarMod">Aceptar</button>                        
+            <button id="btnEliminarModEdit">Eliminar</button>
+            <button id="btnCancelarModEditProd">Cancelar</button>
+            <button id="btnAceptarModEditProd">Aceptar</button>                        
+        </div>        
+    </dialog>    
+    <dialog id="modalNuevoProd">
+        <h2>Nuevo Producto</h2>
+        <div class="divProdMod">
+            <input type="text" id="nombProdModalNuevo" placeholder="Producto" autocomplete="off">
+            <input type="text" id="precProdModalNuevo" placeholder="Precio" autocomplete="off">
+            <input type="text" id="descrProdModalNuevo" placeholder="Descripcion" autocomplete="off">
         </div>
-        
+        <div class="btnContMod">            
+            <button id="btnCancelarModNewProd">Cancelar</button>
+            <button id="btnAceptarModNewProd">Aceptar</button>                        
+        </div>    
     </dialog>
-    <script>
-        window.abrirModal.addEventListener('click', ()=> {
-            window.modalProducto.showModal();
-        });
-        window.btnCancelarMod.addEventListener('click', ()=> {
-            window.modalProducto.close();
-        });
-    </script>
-
     <footer>
         <p><b>&copy; 2023 Eddy Pérez. All rights reserved.</b></p>
     </footer>
 
-    <script src="SCRIPT/script.js"></script>
-    <!--script src="SCRIPT/jquery-3.7.1.js"></script-->
+    <script src="SCRIPT/script.js"></script>    
 </body>
 </html>

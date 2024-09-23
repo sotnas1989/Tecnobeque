@@ -163,7 +163,8 @@ p {
 }
 
 #btn_calcular {
-	background: rgb(9, 224, 9, 0.702);}
+	background: rgb(9, 224, 9, 0.702);
+}
 
 input[type="number"]:not(.nombre_producto) {
 	font-size: medium;

@@ -2,15 +2,9 @@ var llaves = new Array(); // Almacena las llaves de los eltos que hay en el loca
 var nextAvailableKey = 0; // Almacena el proximo valor llave para una futura adicion de producto.
 
 //  MANIPULACION DEL DOM. Agrega los eventos a los elementos HTML.
-let inputArchivo = document.getElementsByClassName('archivo'); 
+let inputArchivo = document.getElementsByClassName('archivo');
 inputArchivo[0].addEventListener('change', leerFichero, false); // Evento change del input file tabla arriba
 inputArchivo[1].addEventListener('change', leerFichero, false); // Evento change del input fila tabla abajo
-let botonEditar = document.getElementsByClassName("buttonEditar");
-botonEditar[0].addEventListener("click", editarProducto, false); 
-botonEditar[1].addEventListener("click", editarProducto, false);
-let botonEliminar = document.getElementsByClassName("buttonEliminar");
-botonEliminar[0].addEventListener("click", eliminarProducto, false);
-botonEliminar[1].addEventListener("click", eliminarProducto, false);
 let botonNuevo = document.getElementsByClassName("buttonNuevo");
 botonNuevo[0].addEventListener("click", nuevoProducto, false);
 botonNuevo[1].addEventListener("click", nuevoProducto, false);
@@ -21,14 +15,161 @@ let botonExportar = document.getElementsByClassName("buttonExportar");
 botonExportar[0].addEventListener("click", exportar2, false);
 botonExportar[1].addEventListener("click", exportar2, false);
 window.addEventListener('load', iniciar, false);
-//window.addEventListener("storage", iniciar, false);
+
+// CONFIGURANDO EVENTOS de los botones MODAL 'Editar Producto'
+const modalEditProd = document.getElementById('modalEditProd');
+
+// Boton Cancelar
+const btnCancelarEditProd = document.getElementById('btnCancelarModEditProd');
+btnCancelarEditProd.addEventListener('click', () => {
+    modalEditProd.close();
+});
+
+// Boton Aceptar del MODAL Editar Producto
+const btnAceptarEditProd = document.getElementById('btnAceptarModEditProd');
+btnAceptarEditProd.addEventListener('click', () => {
+    // Accediendo a la llave del producto representado en el modal
+    let key = modalEditProd.getAttribute('llave');
+    const prod = document.getElementById('nombProdModalEdit');
+    const precio = document.getElementById('precProdModalEdit');
+    const descrip = document.getElementById('descrProdModalEdit');
+    if (prod.value === '') {
+        alert('¡Nombre de producto NO puede ser VACÍO!');
+        // return; // Fin de ejecución
+    }
+    else {
+        // Salvando data en el localStorage
+        let data = `${key};${prod.value};${precio.value};${descrip.value}`;
+        localStorage[key] = data;
+        // Salvando nuevos datos al DOM
+        const tdLista = document.querySelectorAll('tbody tr td:first-child');
+        for (const td of tdLista) {
+            if (td.textContent === key) {
+                // Accediendo a toda la fila (nodo padre)
+                const tr = td.parentElement;
+                // Escribiendo campos del modal a su fila en la tabla
+                tr.children[1].textContent = prod.value;
+                tr.children[2].textContent = precio.value;
+                tr.children[3].textContent = descrip.value;
+                break;
+            }
+        }
+        modalEditProd.close();
+        // location.reload(); // Recargar pagina para visualizar los cambios
+    }
+});
+
+// Boton Eliminar del MODAL Editar Producto
+const btnEliminar = document.getElementById('btnEliminarModEdit');
+btnEliminar.addEventListener('click', () => {
+    // Accediendo a la llave del producto representado en el modal como atributo
+    let key = parseInt(modalEditProd.getAttribute('llave')); // llave hecha numero
+    // Indice de la llave a eliminar del arrego de llaves. Si no existe el elto devuelve -1
+    let indexLlave = llaves.indexOf(key);
+    if (isNaN(key) || (key < 1) || indexLlave === -1) // Validando key
+    {
+        alert("¡Número de producto incorrecto!\nNO es posible eliminar");
+        return;
+    }
+    if (confirm(`¿Desea ELIMINAR el Producto #${key}?`)) {
+        // Eliminando producto del storage
+        localStorage.removeItem(key);        
+        llaves.splice(indexLlave, 1);
+        // Eliminando nodo del DOM
+        const tdLista = document.querySelectorAll('tbody tr td:first-child');
+        for (const td of tdLista) {            
+            if (td.textContent === key.toString()) {
+                // Accediendo a toda la fila (nodo padre)
+                const tr = td.parentElement;                
+                tr.parentElement.removeChild(tr); // Eliminando producto del DOM. No reload de pagina
+                break;
+            }
+        }
+        modalEditProd.close();
+        // location.reload();
+    }
+});
+
+// Configurando Eventos de botones MODAL NUEVO PRODUCTO
+const modalNuevoP = document.getElementById('modalNuevoProd');
+
+// Boton Cancelar
+const btnCancelarNuevoP = document.getElementById('btnCancelarModNewProd');
+btnCancelarNuevoP.addEventListener('click', ()=> {
+    modalNuevoP.close();
+});
+
+// Boton Aceptar del MODAL NUEVO PRODUCTO
+const btnAceptNuevProd = document.getElementById('btnAceptarModNewProd');
+btnAceptNuevProd.addEventListener('click', ()=> {
+    const prod = document.getElementById('nombProdModalNuevo');
+    const precio = document.getElementById('precProdModalNuevo');
+    const descrip = document.getElementById('descrProdModalNuevo');
+    if (prod.value === '') {
+        alert('¡Nombre de producto NO puede ser VACÍO!');
+        // return; // Fin de ejecución
+    }
+    else {
+        // Salvando data en el localStorage
+        let key = nextAvailableKey; // Ayuda a la hora de programar evento click mantener un ambito local
+        let data = `${key};${prod.value};${precio.value};${descrip.value}`;
+        localStorage[key] = data;
+        // Salvando nuevos datos al DOM
+        // Creando fila <tr>
+        const trNuevoP = document.createElement('tr');
+        // Creando celdas <td>
+        const tdLlave = document.createElement('td');
+        const tdNombre = document.createElement('td');
+        const tdPrecio = document.createElement('td');
+        const tdDescrip = document.createElement('td');
+        // Llenando celdas
+        tdLlave.textContent = key;
+        tdNombre.textContent = prod.value;
+        tdPrecio.textContent = precio.value;
+        tdDescrip.textContent = descrip.value;
+        // Agregando celdas a la fila
+        trNuevoP.appendChild(tdLlave);
+        trNuevoP.appendChild(tdNombre);
+        trNuevoP.appendChild(tdPrecio);
+        trNuevoP.appendChild(tdDescrip);
+        // Agregando evento click de fila (Mostrar Modal Editar Prod)
+        trNuevoP.addEventListener('click', () => {
+            // console.log(localStorage[key], `\nkey: ${key} type: ${typeof key}`);
+            let celdasFila = localStorage[key.toString()].split(';'); // IMPORTANTE. PARA QUE NO SE QUEDE CON INFO VIEJA
+            const textoH2 = modalEditProd.querySelector('h2');
+            const prod = document.getElementById('nombProdModalEdit');
+            const precio = document.getElementById('precProdModalEdit');
+            const descrip = document.getElementById('descrProdModalEdit');
+            // Llenando modal con info del producto
+            let llaveProd = celdasFila[0];
+            // Agregando nuevo atributo al modal. Facilita el salvar info al localStorage
+            modalEditProd.setAttribute("llave", llaveProd);
+            textoH2.textContent = `Editar Producto #${llaveProd}`; // Agregando #prod al modal
+            prod.value = celdasFila[1];
+            precio.value = celdasFila[2];
+            descrip.value = celdasFila[3];
+            modalEditProd.showModal();
+        });
+        // Agregando fila al <tbody>
+        const tBody = document.querySelector("tbody");
+        tBody.appendChild(trNuevoP);
+        llaves.push(key); // Agregando llave del nuevo producto
+        nextAvailableKey++; // Actualizando key para futuro prod
+        // Limpiando inputs del modal para una futura insercion
+        prod.value = "";
+        precio.value = "";
+        descrip.value = "";
+        modalNuevoP.close();
+    }
+    
+});
+
 
 /**
- * Crea el nodo <table> a partir de la data que que se encuentra en el localStorage y lo agrega al divTabla 
+ * Crea el nodo <tbody> a partir de la data que que se encuentra en el localStorage y lo agrega a <table>
  */
-function crearTabla() 
-{        
-    if(localStorage.getItem("0") === null) // Si el localStorage no tiene los datos de los productos
+function crearTabla() {
+    if (localStorage.getItem("0") === null) // Si el localStorage no tiene los datos de los productos
     {
         console.log(`Local storage sin datos de productos!\n llaves[]: ${llaves}`);
         return; // Termina la ejecución. Sin datos no tiene sentido hacer mas
@@ -39,133 +180,87 @@ function crearTabla()
     for (let i = 1; i < llaves.length; i++) // Se empieza en 1 porque el 0 es el th
     {
         let key = llaves[i];
-        const celdasFila = localStorage[key].split(';');  // Acediendo a todas las celdas de la fila
+        let celdasFila = localStorage[key].split(';');  // Acediendo a todas las celdas de la fila
         const tr = document.createElement("tr"); // Creando elemento row
-        for (let rowCell = 0; rowCell < celdasFila.length; rowCell++)
-        {
+        for (let rowCell = 0; rowCell < celdasFila.length; rowCell++) {
             const td = document.createElement("td"); // Create new cell
             td.textContent = celdasFila[rowCell];
             tr.appendChild(td); // Adding cell to row
         }
+        // Agregando evento click de fila (Mostrar Modal Editar Prod)
+        tr.addEventListener('click', () => {
+            celdasFila = localStorage[key].split(';'); // IMPORTANTE. PARA QUE NO SE QUEDE CON INFO VIEJA
+            const textoH2 = modalEditProd.querySelector('h2');
+            const prod = document.getElementById('nombProdModalEdit');
+            const precio = document.getElementById('precProdModalEdit');
+            const descrip = document.getElementById('descrProdModalEdit');
+            // Llenando modal con info del producto
+            let llaveProd = celdasFila[0];
+            // Agregando nuevo atributo al modal. Facilita el salvar info al localStorage
+            modalEditProd.setAttribute("llave", llaveProd);
+            textoH2.textContent = `Editar Producto #${llaveProd}`; // Agregando #prod al modal
+            prod.value = celdasFila[1];
+            precio.value = celdasFila[2];
+            descrip.value = celdasFila[3];
+            modalEditProd.showModal();
+        });
         tBody.appendChild(tr); // Agregando row
     }
-    tabla.appendChild(tBody); // Agregando tbody a la la tabla        
+    tabla.appendChild(tBody); // Agregando tbody a la la tabla       
 }
 
-function leerFichero(evt) 
-{
+function leerFichero(evt) {
     let file = evt.target.files[0];
-      let reader = new FileReader();
-      reader.onload = (e) => {
+    let reader = new FileReader();
+    reader.onload = (e) => {
         // Cuando el archivo se terminó de cargar
         let fileText = e.target.result; // Texto del fichero data.csv
         saveToLocalStorage(fileText); // Actualizando localStorage con la nueva información
         location.reload();
         //crearTabla(e.target.result)
-      };
-      // Leemos el contenido del archivo seleccionado
-      reader.readAsText(file);
+    };
+    // Leemos el contenido del archivo seleccionado
+    reader.readAsText(file);
 }
-
-
 
 /**
  * Agrega al local storage la información que fue leída del fichero data.cvs
  * @param {String} data Texto con el formato #;NOMBRE;PRECIO;DESCRIPCION 
  * .Cada línea corresponde a un producto con la excepción de la linea índice 0 que 
  * es el encabezado de la tabla. 
- */    
-function saveToLocalStorage(data)  
-{
+ */
+function saveToLocalStorage(data) {
     const todasFilas = data.split(/\r?\n|\r/); // Separando el texto por filas
-    for (let f = 0; f < todasFilas.length; f++)
-    {
-        let aux = todasFilas[f].split(";");        
-        const llave =  aux[0]; // La llave del producto es el primer valor que aparece en el fichero
+    for (let f = 0; f < todasFilas.length; f++) {
+        let aux = todasFilas[f].split(";");
+        const llave = aux[0]; // La llave del producto es el primer valor que aparece en el fichero
         llaves.push(parseInt(llave)); // Quiero que el array de llaves almacene valores enteros. 
         const valor = todasFilas[f];
-        localStorage.setItem(llave,valor);
+        localStorage.setItem(llave, valor);
     }
-    nextAvailableKey = llaves[llaves.length-1] + 1; // Si la ultima llave almacenada es 20, la proxima sera 21
+    nextAvailableKey = llaves[llaves.length - 1] + 1; // Si la ultima llave almacenada es 20, la proxima sera 21
     crearTabla();
-}
-
-function editarProducto()
-{
-    let fila = parseInt(prompt("Inserte el Número del producto a editar: ")); // Como hay un encabezado en la tabla el valor coincide con la fila    
-    if(isNaN(fila) || (fila<1) || (fila >= llaves.length)) // Validando fila, que sea un numero   1 <= n < llaves.length. Resuelve problema al eliminar
-    {
-        alert("¡Número de producto incorrecto!");
-        return;
-    }
-    let opcion = parseInt(prompt("¿Qué valor desea editar? 1-PRODUCTO 2-PRECIO 3-DESCRIPCION")); // La opcion coincide con la columna
-    if(isNaN(opcion) || opcion<1 || opcion>3) // Validando opcion
-    {
-        alert("¡Valor incorrecto!\nIntroduzca un valor entre 1 y 3");
-        return;
-    }
-    let celdasProducto = document.getElementById("tabla").rows[fila].cells; // Obteniendo todas las celdas de la fila
-    let llave = fila;
-    let valor = prompt("Inserte nuevo valor: ");    
-    // Modificando solamente el nodo a editar y no toda la tabla en si. Actualizar el localStorage
-    celdasProducto[opcion].innerHTML = valor;
-    let aux = celdasProducto[0].innerHTML + ";" + celdasProducto[1].innerHTML + ";" + celdasProducto[2].innerHTML + ";" + celdasProducto[3].innerHTML; // Dando formato
-    localStorage[llave] = aux; 
-    
-}
-
-/**
- * Elimina el n-ésimo producto
- * @param {number} n Número del producto a eliminar
- */
-function eliminarProducto(n)
-{
-    let fila = parseInt(prompt(`Inserte el Número del producto a ELIMINAR.\nEl Número debe estar entre 0 y ${llaves.length-1}`)); // Como hay un encabezado en la tabla el valor coincide con la fila    
-    let indexFila = llaves.indexOf(fila); // Indice del elto a eliminar. Si no existe el elto devuelve -1
-    if(isNaN(fila) || (fila<1) || (fila>=llaves.length) || indexFila === -1) // Validando fila
-    {
-        alert("¡Número de producto incorrecto!\nNO es posible eliminar");
-        return;
-    }
-    localStorage.removeItem(fila); // Eliminando producto del storage
-    
-    llaves.splice(indexFila,1); // Eliminando la llave "fila" de "llaves[]""
-    location.reload();
-    // iniciar();
 }
 
 /**
  * Crea un nuevo producto y lo agrega al final del local storage en el formato nombre;precio;descripción 
  */
-function nuevoProducto()
-{    
-    let nombre = prompt("Inserte el Nombre del Producto: ");
-    if(nombre === "" || nombre === null) // Si el usuario no escribe nada y acepta nombre ="". Si el usuario cancela nombre = null
-    {
-        alert("El nombre NO puede ser vacío");
-        return;
-    }
-    let precio = prompt(`Inserte el Precio de ${nombre}: `);
-    if(precio === "" || precio === null)
-    {
-        alert("¡El precio NO puede estar vació!");
-        return;
-    }
-    let descripcion = prompt("Inserte la Descripción del Producto: "); // NO importa que la descripción sea vacía
-    if(descripcion === null) descripcion = ""; // Para evitar guardar valores null en la tabla
-    // Procesando la información
-    let llave = nextAvailableKey++;
-    llaves.push(llave);
-    let valor = `${llave};${nombre};${precio};${descripcion}`;
-    localStorage.setItem(llave,valor);
-    location.reload();
+function nuevoProducto() {
+    const modalNuevoP = document.getElementById("modalNuevoProd");
+    modalNuevoP.showModal();
+
+
+    // // Procesando la información
+    // let llave = nextAvailableKey++;
+    // llaves.push(llave);
+    // let valor = `${llave};${nombre};${precio};${descripcion}`;
+    // localStorage.setItem(llave, valor);
+    // location.reload();
     // iniciar();
 }
 
-function vaciarLocalStorage()
-{
-    if(localStorage.length === 0)
-    {
+function vaciarLocalStorage() {
+    if (localStorage.length === 0) {
         alert("La tabla se encuentra ya VACÍA");
         return;
     }
@@ -176,7 +271,7 @@ function vaciarLocalStorage()
     nextAvailableKey = 0;
     let tabla = document.getElementById("tabla");
     let nodeTbody = tabla.querySelector("tbody");
-    if(nodeTbody !== null) nodeTbody.remove(); // Si existe eliminar el nodo <tbody>    
+    if (nodeTbody !== null) nodeTbody.remove(); // Si existe eliminar el nodo <tbody>    
 }
 
 /** 
@@ -184,13 +279,11 @@ function vaciarLocalStorage()
  * caracteres \n. Se sigue el formato LLAVE;PRODUCTO;PRECIO;DESCRIPCION de fichero data.csv. Se muestran los 
  * productos ordenados descendentemente segun su llave, ya que el localStorage muestra la información desordenada
  */
-function localStorageToString()
-{
+function localStorageToString() {
     let result = "";
-    for (let index = 0; index < llaves.length; index++) 
-    {
-	    let key = llaves[index];
-        if(index === 0) result = localStorage[key]; // Agrego la primera linea
+    for (let index = 0; index < llaves.length; index++) {
+        let key = llaves[index];
+        if (index === 0) result = localStorage[key]; // Agrego la primera linea
         else result += "\n" + localStorage[key];  // Agrego un cambio de linea y luego la proxima linea
     }
     return result;
@@ -201,50 +294,46 @@ function localStorageToString()
  * @param {string} data Texto a exportar
  * @param {string} fileName Nombre del fichero resultado de la exportación
  */
-    function exportar (data, fileName) 
-    {
-        const a = document.createElement("a");
-        const contenido = data,
-        blob = new Blob([contenido], {type: "octet/stream"}),
+function exportar(data, fileName) {
+    const a = document.createElement("a");
+    const contenido = data,
+        blob = new Blob([contenido], { type: "octet/stream" }),
         url = window.URL.createObjectURL(blob);
-        a.href = url;
-        a.download = fileName;
-        a.click();
-        window.URL.revokeObjectURL(url);    
-    }
+    a.href = url;
+    a.download = fileName;
+    a.click();
+    window.URL.revokeObjectURL(url);
+}
 
-    function exportar2() 
+function exportar2() {
+    if (localStorage.length === 0) // LocalStorage Vacío
     {
-        if(localStorage.length === 0) // LocalStorage Vacío
-        {
-            alert("Tabla VACÍA.\nNada que exportar");
-            return; // fin de ejecución
-        }
-        let data = localStorageToString();
-        let fileName = "data.csv";
-        exportar(data, fileName);
+        alert("Tabla VACÍA.\nNada que exportar");
+        return; // fin de ejecución
     }
+    let data = localStorageToString();
+    let fileName = "data.csv";
+    exportar(data, fileName);
+}
 
 /**
  * Carga e inicializa los datos. 
  */
-function iniciar()
-{        
-    if(localStorage.getItem("0") !== null)  // Si el localStorage contiene las llaves de productos (la llave 0 de los productos existe en el localStorage)
+function iniciar() {
+    if (localStorage.getItem("0") !== null)  // Si el localStorage contiene las llaves de productos (la llave 0 de los productos existe en el localStorage)
     {
         inputArchivo[0].hidden = true; // Ya existen datos en el local storage. Se oculta los botones del cargar fichero
-        inputArchivo[1].hidden = true;        
-        if(llaves.length === 0) // Si llaves vacio. Llenarlo
+        inputArchivo[1].hidden = true;
+        if (llaves.length === 0) // Si llaves vacio. Llenarlo
         {
             let key;
-            for (let i = 0; i < localStorage.length; i++) 
-            {            
+            for (let i = 0; i < localStorage.length; i++) {
                 key = parseInt(localStorage.key(i));
-                if(!isNaN(key))  llaves.push(key);   // Muy necesario ya que a veces el localStorage agrega sus propias k,v               
+                if (!isNaN(key)) llaves.push(key);   // Muy necesario ya que a veces el localStorage agrega sus propias k,v               
             }
             llaves.sort((a, b) => a - b); // Ordenando el array ya que las llaves en el localStorage se guardan sin orden
-        }         
-        nextAvailableKey = llaves[llaves.length-1] + 1; // Si la ultima llave almacenada es 20, la proxima sera 21
+        }
+        nextAvailableKey = llaves[llaves.length - 1] + 1; // Si la ultima llave almacenada es 20, la proxima sera 21
         crearTabla();
     }
     else // LocalStorage no tiene los datos de los productos
@@ -253,5 +342,5 @@ function iniciar()
         inputArchivo[1].hidden = false;
         llaves = new Array(); // Inizializa el array dejando atras viejos valores   
         nextAvailableKey = 0; // Como el localStorage esta vacio el proximo elto tendrá llave 0     
-    }    
+    }
 }

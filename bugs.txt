@@ -52,4 +52,10 @@ QUIZAS: Cambiar celdas[0].textContent  por celdas[0].innerHTML
 * Agregar agregar al localStorage los records de ganancia/inversion diario. Para poder visualizarlos en una gráfica y sacar el promedio de ganancia.
 * [OK]Agregar tabla de productos y servicios al PDF.
 *[YA SE VALIDA EN EL BOTON CALCULAR] Agregar validacion para que antes de IMPRIMIR pdf, se haya calculado correctamente el cuadre
-
+*[OK] Implementar eliminar producto en el modal
+*[OK] Implementar modal para agregar nuevo producto:
+	-[OK] Diseñar y maquetar modal.
+	-[OK] Agregar eventos del modal.
+*[FIXED] Al hacer click en una fila de la tabla se muestra el modal Editar Producto. Al modificar la información del producto, esta se guarda correctamente en el localstorage y en el DOM; pero al volver a clickear el mismo producto, el modal se muestra con la información vieja. Incluso al cambiar varias veces el modal siempre aparece con la información mas antigua, la que tenía originalmente. 
+* Agregar evento el evento 'click' al tr del nuevo producto
+	
