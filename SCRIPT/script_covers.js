@@ -1,16 +1,13 @@
 var llaves = new Array(); // Almacena las llaves de los eltos que hay en el localStorage. Muy útil luego de eliminar un producto
-var nextAvailableKey = "c0"; // Almacena el proximo valor llave para una futura adicion de cover.
+var nextAvailableKey = "c1"; // Almacena el proximo valor llave para una futura adicion de cover.
 
 //  MANIPULACION DEL DOM. Agrega los eventos a los elementos HTML.
-let inputArchivo = document.getElementsByClassName('archivo'); 
-inputArchivo[0].addEventListener('change', leerFichero, false); // Evento change del input file tabla arriba
-inputArchivo[1].addEventListener('change', leerFichero, false); // Evento change del input fila tabla abajo
-let botonEditar = document.getElementsByClassName("buttonEditar");
-botonEditar[0].addEventListener("click", editarCover, false); 
-botonEditar[1].addEventListener("click", editarCover, false);
-let botonEliminar = document.getElementsByClassName("buttonEliminar");
-botonEliminar[0].addEventListener("click", eliminarCover, false);
-botonEliminar[1].addEventListener("click", eliminarCover, false);
+let inputArchivo = document.querySelector('.archivo');
+inputArchivo.addEventListener('change', leerFichero, false); // Evento change del input file tabla arriba
+const botonArchivo = document.getElementsByClassName("buttonArchivo");
+botonArchivo[0].addEventListener('click', abrirChooseFile, false);
+botonArchivo[1].addEventListener('click', abrirChooseFile, false);
+
 let botonNuevo = document.getElementsByClassName("buttonNuevo");
 botonNuevo[0].addEventListener("click", nuevoCover, false);
 botonNuevo[1].addEventListener("click", nuevoCover, false);
@@ -23,14 +20,308 @@ botonExportar[1].addEventListener("click", exportar2, false);
 window.addEventListener('load', iniciar, false);
 
 /**
+ * Abre la ventana de abrir archivo
+ */
+function abrirChooseFile() {
+    inputArchivo.click();
+}
+
+// ******* CONFIGURANDO EVENTOS de los botones MODAL 'Editar Cover'
+const modalEditCov = document.getElementById('modalEditCov');
+
+// Input precio de cover
+const inputPrecio = document.getElementById('precCovModalEdit');
+inputPrecio.addEventListener('input', ()=> {
+    // Usando regex para validar el valor del input
+    inputPrecio.value = inputPrecio.value.replace(/[^0-9]/g, '');
+});
+
+// Input cantidad de covers
+const inputCant = document.getElementById('cantCovModalEdit');
+inputCant.addEventListener('input', ()=> {
+    // Usando regex para validar el valor del input
+    inputCant.value = inputCant.value.replace(/[^0-9]/g, '');
+});
+
+// Boton Cancelar
+const btnCancelarEditCov = document.getElementById('btnCancelarModEdit');
+btnCancelarEditCov.addEventListener('click', () => {
+    modalEditCov.close();
+});
+
+// Boton Aceptar del MODAL Editar Cover
+const btnAceptarEdit = document.getElementById('btnAceptarModEdit');
+btnAceptarEdit.addEventListener('click', () => {
+    // Accediendo a la llave del cover representado en el modal
+    let key = modalEditCov.getAttribute('llave');
+    const nombCover = document.getElementById('covModalEdit');
+    const precio = document.getElementById('precCovModalEdit');
+    const cantidad = document.getElementById('cantCovModalEdit');
+    if (nombCover.value === '') {
+        alert('¡Nombre de cover NO puede ser VACÍO!');
+        return; // Fin de ejecución
+    }
+    if(precio.value === '') {
+        alert('Precio de cover NO puede ser VACÍO');
+        return;
+    }
+    if(cantidad.value === '') {
+        alert('Cantidad de cover NO puede ser VACÍA');
+        return;
+    }
+    // Salvando data en el localStorage
+    let data = `${key};${nombCover.value};${precio.value};${cantidad.value}`;
+    localStorage[key] = data;
+    // Salvando nuevos datos al DOM
+    const tdLista = document.querySelectorAll('tbody tr td:first-child');
+    for (const td of tdLista) {
+        if (`c${td.textContent}` === key) // Concantenando 'c' para que coincida con la llave
+        {
+           // Accediendo a toda la fila (nodo padre)
+           const tr = td.parentElement;
+           // Escribiendo campos del modal a su fila en la tabla
+           tr.children[1].textContent = nombCover.value;
+           tr.children[2].textContent = precio.value;
+           tr.children[3].textContent = cantidad.value;
+           if(cantidad.value === "0")  tr.setAttribute("class", "coverAgotado");    
+           else tr.removeAttribute("class");
+           let clase = claseSegunCantidad(parseInt(cantidad.value));
+           tr.children[3].setAttribute("class", clase);
+           break;
+        }
+    }
+    modalEditCov.close(); 
+});
+
+// Boton Eliminar del MODAL Editar Cover
+const btnEliminar = document.getElementById('btnEliminarModEdit');
+btnEliminar.addEventListener('click', () => {
+    // Accediendo a la llave del producto representado en el modal como atributo
+    let key = modalEditCov.getAttribute('llave'); // llave con formato c# ejemplo c3
+    // Indice de la llave a eliminar del arrego de llaves. Si no existe el elto devuelve -1
+    let indexLlave = llaves.indexOf(key);
+    if (indexLlave === -1) // No existe la llave
+    {
+        alert("¡Número de cover incorrecto!\nNO es posible eliminar");
+        return;
+    }
+    if (confirm(`¿Desea ELIMINAR el Cover #${key.substring(1)}?`)) {
+        // Eliminando cover del storage
+        localStorage.removeItem(key);        
+        llaves.splice(indexLlave, 1);
+        // Eliminando nodo del DOM
+        const tdLista = document.querySelectorAll('tbody tr td:first-child');
+        for (const td of tdLista) {            
+            if (`c${td.textContent}` === key) {
+                // Accediendo a toda la fila (nodo padre)
+                const tr = td.parentElement;                
+                tr.parentElement.removeChild(tr); // Eliminando producto del DOM. No reload de pagina
+                break;
+            }
+        }
+        modalEditCov.close();
+    }
+});
+
+// ***** Configurando EVENTOS MODAL NUEVO COVER
+const modalNuevCov = document.getElementById('modalNuevoCover');
+
+// Input precio del nuevo cover
+const inputPrecNewCov = document.getElementById('precCovModalNuevo');
+inputPrecNewCov.addEventListener('input', ()=> {
+    // Usando regex para validar el valor del input
+    inputPrecNewCov.value = inputPrecNewCov.value.replace(/[^0-9]/g, '');
+});
+
+// Input cantidad de covers
+const inputCantNewCov = document.getElementById('cantCovModalNuevo');
+inputCantNewCov.addEventListener('input', ()=> {
+    // Usando regex para validar el valor del input
+    inputCantNewCov.value = inputCantNewCov.value.replace(/[^0-9]/g, '');
+});
+
+
+// Boton Cancelar
+const btnCancelarNuevCov = document.getElementById('btnCancelarModNuevo');
+btnCancelarNuevCov.addEventListener('click', ()=> {
+    modalNuevCov.close();
+});
+
+// Boton Aceptar del MODAL NUEVO COVER
+const btnAceptNuevCov = document.getElementById('btnAceptarModNuevo');
+btnAceptNuevCov.addEventListener('click', ()=> {
+    let key = nextAvailableKey;
+    const cover = document.getElementById('covModalNuevo');
+    const precio = document.getElementById('precCovModalNuevo');
+    const cantidad = document.getElementById('cantCovModalNuevo');
+    if(cover.value === '') {
+        alert('¡Nombre de cover NO puede ser VACÍO!');
+        return; // Fin de ejecución
+    }
+    if(precio.value === '') {
+        alert('Precio de cover NO puede ser VACÍO');
+        return;
+    }
+    if(cantidad.value === '') {
+        alert('Cantidad de cover NO puede ser VACÍA');
+        return;
+    }
+    //  AGREGANDO NUEVO COVER AL DOM
+    const nuevoCover = document.createElement('tr');
+    // Columna llave
+    const tdKey = document.createElement('td');
+    tdKey.textContent = key.substring(1);
+    nuevoCover.appendChild(tdKey);
+    // Columna Nombre
+    const tdNombre = document.createElement('td');
+    tdNombre.textContent = cover.value;
+    nuevoCover.appendChild(tdNombre);
+    // Columna Precio
+    const tdPrecio = document.createElement('td');
+    tdPrecio.textContent = precio.value;
+    nuevoCover.appendChild(tdPrecio);
+    // Columna Cantidad
+    const tdCant = document.createElement('td');
+    let cant = parseInt(cantidad.value);
+    tdCant.textContent = cant;
+    tdCant.setAttribute('class', claseSegunCantidad(cant));
+    nuevoCover.append(tdCant);
+    // Columna boton -
+    const tdMenos = document.createElement('td');
+    const btnMenos = document.createElement('button');
+    btnMenos.textContent = '-';
+    btnMenos.setAttribute('class', 'decremento');
+    tdMenos.appendChild(btnMenos);
+    nuevoCover.appendChild(tdMenos);
+    // Columna boton +
+    const tdMas = document.createElement('td');
+    const btnMas = document.createElement('button');
+    btnMas.textContent = '+';
+    btnMas.setAttribute('class', 'incremento');
+    tdMas.appendChild(btnMas);
+    nuevoCover.appendChild(tdMas);
+    // AGREGANDO EVENTOS botones - + y al <tr> nuevoCover
+    agregarEventosBtnMenos(nuevoCover, btnMenos, key);
+    agregarEventosBtnMas(nuevoCover,btnMas,key);
+    agregarEventosFila(nuevoCover, key);
+    // nuevoCover.addEventListener('click', agregarEventosCover);
+
+    // Agregando nuevo cover al tbody
+    let tbody = document.querySelector('#tabla tbody');
+    if(tbody === null) { // Esta vacio el tbody
+        tbody = document.createElement("tbody");
+        const tabla = document.getElementById("tabla");
+        tabla.append(tbody);
+    }
+    tbody.appendChild(nuevoCover);
+
+    // Si esta vacio las llaves insertar primero la llave c0     
+    if(llaves.length === 0) {
+        llaves.push("c0");
+        localStorage.setItem("c0", "c0;COVER;PRECIO (CUP);CANTIDAD");
+        // Ocultando botones 'Abrir Archivo'
+        botonArchivo[0].hidden = true;
+        botonArchivo[1].hidden = true;
+    }
+    llaves.push(key); // Agregando al array la nueva llave
+    let parteNumericaLlave = parseInt(key.substring(1)); // En la posicion 0 esta "c"
+    nextAvailableKey = "c" + (++parteNumericaLlave); // Se incrementa primero el valor y luego se le preconcatena "c"
+    // Salvando data en el localStorage
+    let valor = `${key};${cover.value};${precio.value};${cant}`;
+    localStorage.setItem(key,valor);    
+    
+    modalNuevCov.close();
+});
+
+/**
+ * 
+ * @param {HTMLTableRowElement} nuevoCover Fila del nuevo cover en la tabla
+ * @param {HTMLButtonElement} btnMenos Boton - en la tabla
+ * @param {string} key Llave del nuevo cover en la tabla 
+ */
+function agregarEventosBtnMenos(nuevoCover, btnMenos, key) {
+    btnMenos.addEventListener('click', (evt)=> {
+        evt.stopPropagation();
+        let celdas = nuevoCover.cells;
+        let cover = celdas[1].textContent; // Nombre del cover
+        let precio = celdas[2].textContent; // Precio del cover
+        let cantidad = parseInt(celdas[3].textContent);
+        if(cantidad > 0) {
+            // cantidad--;
+            localStorage[key] = `${key};${cover};${precio};${--cantidad}`;
+            celdas[3].textContent = cantidad; // Actualizando la celda cantidad con el nuevo valor
+            // Actualizando el color de celda cantidad
+            let clase = claseSegunCantidad(cantidad);                
+            celdas[3].setAttribute("class", clase);
+            // El cover se agotó
+            if(cantidad === 0) {
+                nuevoCover.setAttribute("class","coverAgotado"); // Agregando la clase para que en el CSS se sombree toda esa fila
+            }
+        }
+        else // Cantidad es 0
+        {
+            alert("Cover AGOTADO!\nImposible decrementar");
+        }
+    });
+}
+
+/**
+ * 
+ * @param {HTMLTableRowElement} nuevoCover Fila del nuevo cover en la tabla
+ * @param {HTMLButtonElement} btnMas Boton + en la tabla
+ * @param {string} key Llave del nuevo cover en la tabla 
+ */
+function agregarEventosBtnMas(nuevoCover, btnMas, key) {
+    btnMas.addEventListener('click', (evt) => {
+        evt.stopPropagation();
+        let celdas = nuevoCover.cells;
+        let cover = celdas[1].textContent; // Nombre del cover
+        let precio = celdas[2].textContent; // Precio del cover
+        let cantidad = parseInt(celdas[3].textContent);
+        if (cantidad === 0) nuevoCover.removeAttribute("class", "coverAgotado"); // Se elimina el sombreado rojo de la fila
+        // cantidad++;
+        localStorage[key] = `${key};${cover};${precio};${++cantidad}`;
+        celdas[3].textContent = cantidad; // Actualizando la celda cantidad con el nuevo valor
+        // Actualizando el color de celda cantidad
+        let clase = claseSegunCantidad(cantidad);
+        celdas[3].setAttribute("class", clase);
+    });
+}
+
+/**
+ * Agrega el evento 'click' en la tabla para el nuevo cover.
+ * @param {HTMLTableRowElement} nuevoCover Fila de la tabla que contiene los datos del nuevo cover
+ * @param {string} key Llave del nuevo cover.
+ */
+function agregarEventosFila(nuevoCover, key) {
+    nuevoCover.addEventListener('click', () => {
+        const celdas = nuevoCover.cells;
+        const textoH2 = modalEditCov.querySelector('h2');
+        const cover = document.getElementById('covModalEdit');
+        const precio = document.getElementById('precCovModalEdit');
+        const cantidad = document.getElementById('cantCovModalEdit');
+        // Agregando nuevo atributo al modal. Facilita el salvar info al localStorage
+        modalEditCov.setAttribute("llave", key);
+        // Llenando modal con info del producto
+        textoH2.textContent = `Editar Cover #${key.substring(1)}`; // Agregando #cov al modal
+        cover.value = celdas[1];
+        precio.value = celdas[2];
+        cantidad.value = celdas[3];
+        modalEditCov.showModal();
+    });
+}
+
+/**
  * Carga e inicializa los datos. 
  */
 function iniciar()
 {        
     if(localStorage.getItem("c0") !== null)  // Si el localStorage contiene las llaves de productos (la llave 0 de los productos existe en el localStorage)
     {
-        inputArchivo[0].hidden = true; // Ya existen datos en el local storage. Se oculta los botones del cargar fichero
-        inputArchivo[1].hidden = true;   
+        // Ya existen datos en el local storage. Se oculta los botones del cargar fichero
+        botonArchivo[0].hidden = true;
+        botonArchivo[1].hidden = true;
+
         if(llaves.length === 0) // Si llaves vacio. Llenarlo
         {
             let key;
@@ -51,10 +342,12 @@ function iniciar()
     }
     else // LocalStorage no tiene los datos de los productos
     {
-        inputArchivo[0].hidden = false;
-        inputArchivo[1].hidden = false;
+        // inputArchivo[0].hidden = false;
+        // inputArchivo[1].hidden = false;
+        botonArchivo[0].hidden = false;
+        botonArchivo[1].hidden = false;
         llaves = new Array(); // Inizializa el array dejando atras viejos valores   
-        nextAvailableKey = "c0"; // Como el localStorage esta vacio el proximo elto tendrá llave c0     
+        nextAvailableKey = "c1"; // Como el localStorage esta vacio el proximo elto tendrá llave c1     
     }    
 }
 
@@ -89,27 +382,34 @@ function addEventListenerBotonesEdicion()
         let celdas = filaActual.cells; // Todas las celdas de la fila f
         // Accediendo a los datos de ID, CANTIDAD, - , +
         let key = "c" + celdas[0].innerHTML; // Llave de ese cover en el localStorage. Las llaves de los covers comienzan con "c"
-        let cover = celdas[1].innerHTML; // Nombre del cover
-        let precio = celdas[2].innerHTML; // Precio del cover
+        
         let cantidad = parseInt(celdas[3].innerHTML); // Cantidad de unidades del tipo de cover de la fila f
         if(cantidad === 0) // El cover se agotó
         {
             filaActual.setAttribute("class","coverAgotado"); // Agregando la clase para que en el CSS se sombree toda esa fila
         }
         else filaActual.removeAttribute("class"); // El producto dejó de estar agotado
+        
         // GESTION BOTON -
-        let botonMenos = celdas[4].firstElementChild;
-        botonMenos.addEventListener("click", ()=>{            
+        let botonMenos = celdas[4].firstElementChild;        
+        botonMenos.addEventListener("click", (ev)=>{              
+            ev.stopPropagation(); // Evita que se ejecute el evento clic de la fila
+            // Accediendo a datos actualizados
+            let cover = celdas[1].innerHTML; // Nombre del cover
+            let precio = celdas[2].innerHTML; // Precio del cover
+            cantidad = parseInt(celdas[3].innerHTML);
             if(cantidad > 0)
             {                
                 cantidad--;
                 localStorage[key] = `${key};${cover};${precio};${cantidad}`;
-                // celdas[3].innerHTML = cantidad; // Actualizando la celda cantidad con el nuevo valor
+                celdas[3].innerHTML = cantidad; // Actualizando la celda cantidad con el nuevo valor
+                // Actualizando el color de celda cantidad
+                let clase = claseSegunCantidad(cantidad);                
+                celdas[3].setAttribute("class", clase);
                 if(cantidad === 0) // El cover se agotó
                 {
                     filaActual.setAttribute("class","coverAgotado"); // Agregando la clase para que en el CSS se sombree toda esa fila
-                }
-                location.reload();
+                }                
             }
             else // Cantidad es 0
             {
@@ -117,95 +417,99 @@ function addEventListenerBotonesEdicion()
             }
         }) ;
         // GESTION BOTON +
-        let botonMas = celdas[5].firstElementChild;
-        botonMas.addEventListener("click", ()=>{            
+        let botonMas = celdas[5].firstElementChild;            
+        botonMas.addEventListener("click", (ev)=>{  
+            ev.stopPropagation(); // Evita que se ejecute el evento clic de la fila
+            // Accediendo a datos actualizados
+            let cover = celdas[1].innerHTML; // Nombre del cover
+            let precio = celdas[2].innerHTML; // Precio del cover
+            cantidad = parseInt(celdas[3].innerHTML);
             cantidad++;
             localStorage[key] = `${key};${cover};${precio};${cantidad}`;
-            // celdas[3].innerHTML = cantidad; // Actualizando la celda cantidad con el nuevo valor
+            celdas[3].innerHTML = cantidad; // Actualizando la celda cantidad con el nuevo valor
+            // Actualizando el color de celda cantidad
+            let clase = claseSegunCantidad(cantidad);                
+            celdas[3].setAttribute("class", clase);
             if(cantidad === 1)
             {
                 filaActual.removeAttribute("class"); // El producto dejó de estar agotado
-            }
-            location.reload();
+            }            
         }) ;        
     }
 }
 
 /**
- * Crea el nodo <table> a partir de la data que que se encuentra en el localStorage y lo agrega al divTabla 
+ * Crea el nodo TBODY a partir de la data que que se encuentra en el localStorage y lo agrega a TABLE
  */
 function crearTabla() 
-{        
+{   
     if(localStorage.getItem("c0") === null) // Si el localStorage no tiene los datos de los covers
     {
+        alert("¡Datos no cargados!\nPor favor carge el archivo: data_covers.csv");
         console.log("Local storage sin datos de covers!\n llaves[]: " + llaves);
         return; // Termina la ejecución. Sin datos no tiene sentido hacer mas
     }
+    const tabla = document.getElementById("tabla");
+    const tBody = document.createElement("tbody");
+    // Recorriendo las llaves 
+    for (let i = 1; i < llaves.length; i++) // Se empieza en 1 porque el 0 es el encabezado de tabla
+    {
+        let key = llaves[i];
+        let celdasFila = localStorage[key].split(';');  // Acediendo a todas las celdas de la fila
+        const tr = document.createElement("tr"); // Creando elemento row
+        for (let rowCell = 0; rowCell < celdasFila.length; rowCell++)
+         {
+            const td = document.createElement("td"); // Create new cell
+            if(rowCell === 0) td.textContent = celdasFila[0].substring(1); // Quitando la 'c' de "c1"
+            else td.textContent = celdasFila[rowCell]; // Agregando el valor
+            if(rowCell === 3) // Agregando el atributo class en dependencia del valor de cantidad
+            {
+                let cantidad = parseInt(celdasFila[rowCell]); // Cantidad de unidades del cover en posicion "fila" 
+                let clase = claseSegunCantidad(cantidad);
+                td.setAttribute("class", clase);
+                if(cantidad === 0) // Hay 0 covers de ese tipo
+                {
+                    tr.setAttribute("class", "coverAgotado"); // Garantiza el sombreado rojo de la fila por CSS
+                }
+            }        
+            tr.appendChild(td); // Adding cell to row
+        }
+        // Agregando boton - de cantidad
+        let tdAux = document.createElement("td");
+        const btnDecre = document.createElement("button");
+        btnDecre.textContent = "-";
+        btnDecre.setAttribute("class", "decremento");
+        tdAux.appendChild(btnDecre);
+        tr.appendChild(tdAux);
+        // Agregando boton + de cantidad
+        tdAux = document.createElement("td");
+        const btnIncre = document.createElement("button");
+        btnIncre.textContent = "+";
+        btnIncre.setAttribute("class", "incremento");
+        tdAux.appendChild(btnIncre);
+        tr.appendChild(tdAux);
 
-    let tabla = '<table id="tabla">';
-    let fila;    
-    for (let i = 0; i < llaves.length; i++) // Recoriendo las llaves[]
-     {
-        fila = llaves[i];
-        if (fila === "c0") 
-        {
-            tabla += '<thead>';
-            tabla += '<tr>';
-        } 
-        else 
-        {
-            tabla += '<tr>';
-        }        
-        const celdasFila = localStorage[fila].split(';');  // Acediendo a todas las celdas de la fila "fila"
-        for (let rowCell = 0; rowCell < celdasFila.length; rowCell++)  // Recorriendo las celdas de "fila"
-        {
-            if (fila === "c0")
-            {
-                tabla += '<th>';
-                if(rowCell === 0) tabla += '#'; // Para que en la celda [0;0] ponga # y  no c0.                
-                else tabla += celdasFila[rowCell];
-                if(rowCell === 3) // Celda CANTIDAD
-                {
-                    tabla += '</th>'; // Cierro etiqueta
-                    tabla += '<th colspan="2">' // Abriendo etiqueta de celda doble GESTION 
-                    tabla += 'GESTIÓN'; // Agregando celda GESTIÓN luego de la celda CANTIDAD                    
-                }                 
-                tabla += '</th>';
-            }         
-            else // cualquier otra fila
-            {
-                if(rowCell === 3) // Agregando el atributo class en dependencia del valor de cantidad
-                {
-                    tabla += '<td class = '; 
-                    let cantidad = parseInt(celdasFila[rowCell]); // Cantidad de unidades del cover en posicion "fila" 
-                    let clase = claseSegunCantidad(cantidad);
-                    tabla += `"${clase}">`; 
-                }
-                else tabla += '<td>';
-                if(rowCell === 0)  tabla += celdasFila[rowCell].substring(1); // NO se pone la "c" de la llave cover en la tabla          
-                else tabla += celdasFila[rowCell];                
-                tabla += '</td>';
-                if(rowCell === 3) // Celda CANTIDAD
-                {
-                    tabla += '<td><button class="decremento">-</button></td>'; // Agregando celda con boton -
-                    tabla += '<td><button class="incremento">+</button></td>'; // Agregando celda con boton +
-                }
-            }
-        }
-        if (fila === "c0")
-        {
-            tabla += '</tr>';
-            tabla += '</thead>';
-            tabla += '<tbody>';
-        }
-        else
-        {
-            tabla += '</tr>';
-        }
-    } 
-        tabla += '</tbody>';
-        tabla += '</table>';
-        document.querySelector('#divTabla').innerHTML = tabla;               
+        // Agregando evento click de fila (Mostrar Modal Editar Cover)
+        tr.addEventListener('click', () => {           
+            
+            celdasFila = localStorage[key].split(';'); // IMPORTANTE. PARA QUE NO SE QUEDE CON INFO VIEJA
+            const textoH2 = modalEditCov.querySelector('h2');
+            const cover = document.getElementById('covModalEdit');
+            const precio = document.getElementById('precCovModalEdit');
+            const cantidad = document.getElementById('cantCovModalEdit');
+            // Llenando modal con info del producto
+            let llaveCov = celdasFila[0];
+            // Agregando nuevo atributo al modal. Facilita el salvar info al localStorage
+            modalEditCov.setAttribute("llave", llaveCov);
+            textoH2.textContent = `Editar Cover #${llaveCov.substring(1)}`; // Agregando #cov al modal
+            cover.value = celdasFila[1];
+            precio.value = celdasFila[2];
+            cantidad.value = celdasFila[3];
+            modalEditCov.showModal();
+        });
+        tBody.appendChild(tr); // Agregando row
+    }
+    tabla.appendChild(tBody); // Agregando tbody a la la tabla        
 }
 
 /**
@@ -244,12 +548,10 @@ function leerFichero(evt)
       reader.onload = (e) => {
         // Cuando el archivo se terminó de cargar
         let fileText = e.target.result; // Texto del fichero data.csv
-        saveToLocalStorage(fileText); // Actualizando localStorage con la nueva información
-        location.reload();
-        //crearTabla(e.target.result)
+        saveToLocalStorage(fileText); // Actualizando localStorage con la nueva información        
       };
       // Leemos el contenido del archivo seleccionado
-      reader.readAsText(file);
+      if(file) reader.readAsText(file); // el if garantiza que file no sea undefined
 }
 
 /**
@@ -265,10 +567,21 @@ function saveToLocalStorage(data)
     {
         let aux = todasFilas[f].split(";");        
         const llave =  aux[0]; // La llave del producto es el primer valor que aparece en el fichero
-        llaves.push(llave);  
-        const valor = todasFilas[f];
-        localStorage.setItem(llave,valor);
-    }    
+        // Si la llave no es de cover (c#), no la agrego
+        if(llave.includes('c')) 
+        {
+            llaves.push(llave);
+            const valor = todasFilas[f];
+            localStorage.setItem(llave, valor);
+        }
+        else{
+            alert('Archivo NO VALIDO.\nPor favor abrir:   Tecnobeque/data_covers.csv');
+            return; // FINAL. El fichero no es el correcto
+        }
+    }
+    // Archivo Cargado Exitosamente. Se ocultan los botones 'Abrir Archivo'
+    botonArchivo[0].hidden = true;
+    botonArchivo[1].hidden = true;    
     let parteNumericaLlave = parseInt(llaves[llaves.length-1].substring(1)); // Obteniendo la parte numerica de la ultima llava eje: c17 ---> 17
     nextAvailableKey = "c" + (parteNumericaLlave + 1); // Si la ultima llave almacenada es c20, la proxima sera c21
     crearTabla();
@@ -327,130 +640,23 @@ function vaciarLocalStorage()
         alert("La tabla se encuentra ya VACÍA");
         return;
     }
-    inputArchivo[0].hidden = false; // Visualizando nuevamente el input para que se pueda cargar el fichero data_covers.csv
-    inputArchivo[1].hidden = false;
+    // inputArchivo[0].hidden = false; // Visualizando nuevamente el input para que se pueda cargar el fichero data_covers.csv
+    // inputArchivo[1].hidden = false;
+    botonArchivo[0].hidden = false;
+    botonArchivo[1].hidden = false;
+
     localStorage.clear();
     llaves = new Array();
-    nextAvailableKey = "c0";
+    nextAvailableKey = "c1";
     let tabla = document.getElementById("tabla");
     let nodeTbody = tabla.querySelector("tbody");
     if(nodeTbody !== null) nodeTbody.remove(); // Si existe eliminar el nodo <tbody>    
 }
 
-function editarCover()
-{
-    let fila = parseInt(prompt("Inserte el Número del producto a editar: ")); // Como hay un encabezado en la tabla el valor coincide con la fila    
-    if(isNaN(fila) || (fila<1) || (fila >= llaves.length)) // Validando fila, que sea un numero   1 <= n < llaves.length. Resuelve problema al eliminar
-    {
-        alert(`¡Número de cover incorrecto!\nIntroduzca un valor entre 1 y ${llaves.length-1}.`);
-        return;
-    }
-    let opcion = parseInt(prompt("¿Qué valor desea editar? 1-COVER 2-PRECIO 3-CANTIDAD")); // La opcion coincide con la columna
-    if(isNaN(opcion) || opcion<1 || opcion>3) // Validando opcion
-    {
-        alert("¡Valor incorrecto!\nIntroduzca un valor entre 1 y 3");
-        return;
-    }
-    let celdasCover = document.getElementById("tabla").rows[fila].cells; // Obteniendo todas las celdas de la fila
-    let llave = "c" + fila; // Las llaves de los covers comienzan con "c"
-    let opcion_name = "";
-    switch (opcion) {
-        case 1:
-            opcion_name = "COVER";
-            break;
-        case 2:
-            opcion_name = "PRECIO";
-            break;
-        case 3:
-            opcion_name = "CANTIDAD"; 
-            break;   
-        default:
-            opcion_name = null;
-            alert("Valor de OPCION no válido");
-            break;
-    }
-    let valor = prompt(`Inserte nuevo valor de ${opcion_name}: `);
-    if(opcion === 1 && valor === "") // Validando el nuevo valor de COVER.
-    {
-        alert("¡El nombre del COVER NO puede estar VACÍO!");
-        return;
-    }
-    if(opcion === 2) // Validando el nuevo valor de PRECIO
-    {
-        valor = parseInt(valor); // PRECIO como valor entero
-        if(isNaN(valor) || valor<0)
-        {
-            alert("¡El PRECIO debe ser un número y debe ser positivo!");
-            return;
-        }
-    }
-    if(opcion === 3) // Validando el nuevo valor de CANTIDAD
-    {
-        valor = parseInt(valor); // CANTIDAD como valor entero
-        if(isNaN(valor) || valor<0)
-        {
-            alert("¡La CANTIDAD deve ser un número y debe ser positivo!");
-            return;
-        }
-    }
-    // Modificando solamente el nodo a editar y no toda la tabla en si. Actualizar el localStorage
-    celdasCover[opcion].innerHTML = valor;
-    let aux = "c" + celdasCover[0].innerHTML + ";" + celdasCover[1].innerHTML + ";" + celdasCover[2].innerHTML + ";" + celdasCover[3].innerHTML; // Dando formato
-    localStorage[llave] = aux;  
-    location.reload();    
-}
-
 /**
- * Crea un nuevo cover y lo agrega al local storage en el formato #;COVER;PRECIO;CANTIDAD 
+ * Muestra Modal Nuevo Cover
  */
 function nuevoCover()
-{    
-    let nombre = prompt("Inserte el Nombre del Cover: ");
-    if(nombre === "" || nombre === null)
-    {
-        alert("El nombre NO puede ser vacío");
-        return;
-    }
-    let precio = parseInt(prompt(`Inserte el Precio del cover ${nombre}: `));
-    if(isNaN(precio) || precio<0)
-    {
-        alert("¡El PRECIO debe ser un número y debe ser positivo!");
-        return;
-    }
-    let cantidad = parseInt(prompt(`Inserte la CANTIDAD de covers de ${nombre}:`)); 
-    if(isNaN(cantidad) || cantidad<0)
-    {
-        alert("¡La cantidad debe ser un número y debe ser positivo!");
-        return;
-    }
-    let llave = nextAvailableKey;
-    llaves.push(llave); // Agregando al array la nueva llave
-    let parteNumericaLlave = parseInt(llave.substring(1)); // En la posicion 0 esta "c"
-    nextAvailableKey = "c" + (++parteNumericaLlave); // Se incrementa primero el valor y luego se le preconcatena "c"
-    
-    let valor = `${llave};${nombre};${precio};${cantidad}`;
-    localStorage.setItem(llave,valor);
-    //iniciar();
-    location.reload();
-}
-
-/**
- * Elimina el n-ésimo cover
- * @param {number} n Número del cover a eliminar
- */
-function eliminarCover(n)
-{
-    let fila = parseInt(prompt(`Inserte el Número del cover a ELIMINAR.\nEl Número debe estar entre 0 y ${llaves.length-1}`)); // Como hay un encabezado en la tabla el valor coincide con la fila    
-    let key = "c" + fila;
-    let indexFila = llaves.indexOf(key); // Indice del elto a eliminar. Si no existe el elto devuelve -1
-    if(isNaN(fila) || (fila<1) || (fila>=llaves.length) || indexFila === -1) // Validando fila
-    {
-        alert("¡Número de cover incorrecto!\nNO es posible eliminar");
-        return;
-    }
-    localStorage.removeItem(key); // Eliminando producto del storage
-    
-    llaves.splice(indexFila,1); // Eliminando la llave "fila" de "llaves[]""
-    location.reload();
-    // iniciar();
+{   
+    modalNuevCov.showModal();
 }

@@ -24,8 +24,7 @@
         </nav>
     </header>
     <main>
-        <br><br>
-        <!--input type="datetime-local" name="tiempolocal"-->
+        <br><br>        
         <p>En <strong>Tecnobeque</strong> ofrecemos servicios de reparación de celulares como: puerto de carga, placa, display y batería. Todos los trabajos 
             de reparación tienen 7 días de garantía (menos el cambio de pantalla ya que es muy suceptible a las caídas y mala manipulación).
             Sin embargo el cliente puede probar exhaustivamente (dentro del taller) que la pantalla funciona al 100% sin límite de tiempo.
@@ -37,10 +36,11 @@
         </p> <br>
     </main>
     <section>
-        <input type="file" class="archivo" accept=".csv" title="Cargue el archivo Tecnobeque/data_covers.csv"/>        
-        <button class="buttonNuevo">Nuevo</button>        
-        <button class="buttonVaciar">Vaciar Tabla</button>
-        <button class="buttonExportar">Exportar</button>
+        <input type="file" class="archivo" accept=".csv"/>
+        <button class="buttonArchivo" title="Cargue el archivo Tecnobeque/data.csv" >Abrir Archivo</button>
+        <button class="buttonNuevo" title="Crea Nuevo Producto">Nuevo</button>
+        <button class="buttonVaciar" title="Elimina todos los productos de la tabla">Vaciar Tabla</button>
+        <button class="buttonExportar" title="Salva la tabla a un fichero data.csv">Exportar</button>
         <div id="divTabla">
             <table id="tabla">
                 <thead>
@@ -52,12 +52,13 @@
                     </tr>
                 </thead>
             </table>
-        </div>
-        <input type="file" class="archivo" accept=".csv" title="Cargue el archivo Tecnobeque/data_covers.csv"/>        
-        <button class="buttonNuevo">Nuevo</button>        
-        <button class="buttonVaciar">Vaciar Tabla</button>
-        <button class="buttonExportar">Exportar</button>        
-    </section>    
+        </div>        
+        <button class="buttonArchivo" title="Cargue el archivo Tecnobeque/data.csv" >Abrir Archivo</button>        
+        <button class="buttonNuevo" title="Crea Nuevo Producto">Nuevo</button>
+        <button class="buttonVaciar" title="Elimina todos los productos de la tabla">Vaciar Tabla</button>
+        <button class="buttonExportar" title="Salva la tabla a un fichero data.csv">Exportar</button>      
+    </section>
+    <!-- Ventana Editar Producto -->    
     <dialog id="modalEditProd">
         <h2>Editar Producto</h2>
         <div class="divProdMod">
@@ -70,7 +71,8 @@
             <button id="btnCancelarModEditProd">Cancelar</button>
             <button id="btnAceptarModEditProd">Aceptar</button>                        
         </div>        
-    </dialog>    
+    </dialog>
+    <!-- Ventana Nuevo Producto -->  
     <dialog id="modalNuevoProd">
         <h2>Nuevo Producto</h2>
         <div class="divProdMod">

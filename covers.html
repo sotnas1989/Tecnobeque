@@ -47,12 +47,11 @@
             <div class="divColorAbundante" title="16 a 25 Covers"><p>Abundante</p></div>
             <div class="divColorExceso" title="Más de 26 Covers"><p>Exceso</p></div>
         </div>         
-        <input type="file" class="archivo" accept=".csv" title="Cargue el archivo Tecnobeque/data_covers.csv"/>
-        <button class="buttonEditar">Editar</button>
-        <button class="buttonNuevo">Nuevo</button>
-        <button class="buttonEliminar">Eliminar</button>
-        <button class="buttonVaciar">Vaciar Tabla</button>
-        <button class="buttonExportar">Exportar</button>
+        <input type="file" class="archivo" accept=".csv"/>
+        <button class="buttonArchivo" title="Cargue el archivo Tecnobeque/data_covers.csv">Abrir Archivo</button>
+        <button class="buttonNuevo" title="Crea Nuevo Cover">Nuevo</button>
+        <button class="buttonVaciar" title="Elimina todos los covers de la tabla">Vaciar Tabla</button>
+        <button class="buttonExportar" title="Salva la tabla a un fichero data_covers.csv">Exportar</button>        
         <div id="divTabla">
             <table id="tabla">
                 <thead>
@@ -65,20 +64,44 @@
                     </tr>                    
                 </thead>                
             </table>
-        </div> 
-        <input type="file" class="archivo" title="Cargue el archivo Tecnobeque/data_covers.csv"/>
-        <button class="buttonEditar">Editar</button>
-        <button class="buttonNuevo">Nuevo</button>
-        <button class="buttonEliminar">Eliminar</button>
-        <button class="buttonVaciar">Vaciar Tabla</button>
-        <button class="buttonExportar">Exportar</button>       
+        </div>        
+        <button class="buttonArchivo" title="Cargue el archivo Tecnobeque/data_covers.csv">Abrir Archivo</button>
+        <button class="buttonNuevo" title="Crea Nuevo Cover">Nuevo</button>
+        <button class="buttonVaciar" title="Elimina todos los covers de la tabla">Vaciar Tabla</button>
+        <button class="buttonExportar" title="Salva la tabla al archivo data_covers.csv">Exportar</button>       
     </section>
+    <!-- Ventana Editar Cover -->    
+    <dialog id="modalEditCov">
+        <h2>Editar Cover</h2>
+        <div class="divCovMod">
+            <input type="text" id="covModalEdit" placeholder="Cover" autocomplete="off">
+            <input type="number" id="precCovModalEdit" placeholder="Precio" min=0 autocomplete="off">
+            <input type="number" id="cantCovModalEdit" placeholder="Cantidad" min=0 autocomplete="off">
+        </div>
+        <div class="btnContMod">
+            <button id="btnEliminarModEdit">Eliminar</button>
+            <button id="btnCancelarModEdit">Cancelar</button>
+            <button id="btnAceptarModEdit">Aceptar</button>                        
+        </div>        
+    </dialog>
+    <!-- Ventana Nuevo Cover -->  
+    <dialog id="modalNuevoCover">
+        <h2>Nuevo Cover</h2>
+        <div class="divCovMod">
+            <input type="text" id="covModalNuevo" placeholder="Cover" autocomplete="off">
+            <input type="number" id="precCovModalNuevo" placeholder="Precio" autocomplete="off">
+            <input type="number" id="cantCovModalNuevo" placeholder="Cantidad" autocomplete="off">
+        </div>
+        <div class="btnContMod">            
+            <button id="btnCancelarModNuevo">Cancelar</button>
+            <button id="btnAceptarModNuevo">Aceptar</button>                        
+        </div>    
+    </dialog>
 
     <footer>
-        <p><b>&copy; 2023 Eddy Pérez. All rights reserved.</b></p>
+        <p><b>&copy; 2024 Eddy Pérez. All rights reserved.</b></p>
     </footer>
-
     <script src="SCRIPT/script_covers.js"></script>
-    <!--script src="SCRIPT/jquery-3.7.1.js"></script-->
+    
 </body>
 </html>

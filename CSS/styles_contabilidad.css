@@ -123,6 +123,7 @@ p {
 
 .input_date:hover {
 	background: rgb(188, 228, 255);
+	transition: 0.4s ease-in-out;
 }
 
 .sction_input {
@@ -151,6 +152,7 @@ p {
 .botones button:hover, .sction_output button:hover, #btn_cerrar:hover {
 	color: #fff;
 	border-radius: 20px;
+	transition: 0.4s ease-in-out;
 }
 
 #btn_agregar_prod, #btn_agregar_serv, #btn_imprimir {
@@ -282,5 +284,5 @@ footer p {
 	text-align: center;
 	font-size: 16px;
 	color: gray;
-	margin-top: 24px;
+	margin: 24px 0;
 }

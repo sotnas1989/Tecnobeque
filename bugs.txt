@@ -1,7 +1,7 @@
-			Bugs encontrados
+								BUGS ENCONTRADOS (ERRORES A ARREGLAR)
 *[Fixed]Al hacer clic en el boton "Vaciar Tabla" se vacía el localstorage y se elimina el nodo <tbody> de <table> a traves de la propiedad tabla.lastChild.remove(). Esto funciona bien la primera vez pero al presionar nuevamente el boton elimina el nodo <thead>.
 
-*Al cargar el fichero data.csv y luego de agregarse los datos al local storage, la tabla se actualiza y muestra los nuevos valores, pero el inputFile no se oculta, solo se oculta al refrescar la pagina con F5.
+*[FIXED]Al cargar el fichero data.csv y luego de agregarse los datos al local storage, la tabla se actualiza y muestra los nuevos valores, pero el inputFile no se oculta, solo se oculta al refrescar la pagina con F5.
 
 *Al tener dos ventanas de la aplicación en el mismo navegador, al vaciar la tabla en la primera, hay que refrescar manualmente la segunda ventana para que se visualisen los nuevos cambios.
 
@@ -26,7 +26,7 @@ Clases CSS para la cantidad de covers:
 
 *[FIXED]En covers.html verificar el boton Editar. Seleccionando la opcion = 3. Resuelto: faltaban las sentencias break; en la instrucción switch.
 
-*Al presionar el boton Editar seleccionando numero:1 Opción: e insertando el valor 0 . La página no se autorefresca. Luego al tratar de incrementar de uno a uno la cantidad a traves del boton de incremento se duplica la fila
+*[FIXED]Al presionar el boton Editar seleccionando numero:1 Opción: e insertando el valor 0 . La página no se autorefresca. Luego al tratar de incrementar de uno a uno la cantidad a traves del boton de incremento se duplica la fila
 
 QUIZAS: Cambiar celdas[0].textContent  por celdas[0].innerHTML
 
@@ -57,5 +57,35 @@ QUIZAS: Cambiar celdas[0].textContent  por celdas[0].innerHTML
 	-[OK] Diseñar y maquetar modal.
 	-[OK] Agregar eventos del modal.
 *[FIXED] Al hacer click en una fila de la tabla se muestra el modal Editar Producto. Al modificar la información del producto, esta se guarda correctamente en el localstorage y en el DOM; pero al volver a clickear el mismo producto, el modal se muestra con la información vieja. Incluso al cambiar varias veces el modal siempre aparece con la información mas antigua, la que tenía originalmente. 
-* Agregar evento el evento 'click' al tr del nuevo producto
-	
+/////////////////////////////////////////////////////////////////////
+
+* Animar el banner. Hacer animación que alterne entre las imágenes con un intervalo de 2 segundos
+* Agregar Tabla Total de Covers. El total es la sumatoria de la columna Cantidad.
+* Agregar popups para las avisar que la operación(agregar, eliminar, editar) se ejecutó correctamente. Tip: Que el popup desaparezca a los 2 seg.
+
+*[OK] Reimplementar el metodo crearTabla() evitando usar innerHTML. Crear dinamicamente la tabla a traves de document.createElement().
+*[FIXED] Evitar que al hacer click en los botones - y + de cantidad se muestre el modal de editar cover. (Como los botones son parten de la fila comparten el evento click. Buscar una forma de que solo se ejecute su propio evento click y no el del nodo padre tr) 
+*[OK] Que los botones + y - de la tabla de covers modifiquen la cantidad sin recargar la pagina. Lograr que los colores de cantidad tambien se actualizen.
+*[OK] Usar REGEX para validar los inputs de los modales.
+* Al mostrar el modalNuevoCover que el h2 muestre la numeración que tendrá en la tabla el nuevo cover. Pudiera ser mejor mostrarlo luego de agregado como un popup.
+*[OK] Agregar escucha de evento 'click' para los botones - y + del nuevo cover.
+*[OK] Agregar escucha de evento 'click' para la fila de la tabla del nuevo cover.
+* Evitar que cada vez que el usuario refresque la página se agregen los eventos de las filas si ya fueron agregados previamente. Esto mejora grandemente la eficiencia.
+* Los inputs numericos se validan con la siguiente REGEX: replace(/[^0-9]/g, '') Pero al insertar un '.' el cursor de escritura se coloca al principio. Lograr que al presionar '.' limpie el input como los demas caracteres no permitidos.
+*[OK] Maquetar los modales editarCover y nuevoCover.
+*[FIXED] Al hacer click en el boton NUEVO sin existir datos cargados: Uncaught TypeError: Cannot read properties of null (reading 'appendChild')
+    at HTMLButtonElement.<anonymous> (script.js:163:15)
+*[FIXED] Al cargar el data_covers.csv desde la pagina Inicio da acceso a null.
+* No dejar cargar un fichero CSV hasta que se halla vaciado la tabla. Tip: Ocultar boton Abrir Archivo.
+*[FIXED] El array 'llaves' se está llenando de valores NaN cuando se cargan los ficheros. (index.html)
+*[FiXED] Ver si es necesario refrescar la pagina index.html en el metodo 'leerFichero'. NO HACE FALTA.
+* Estando la tabla vacía, al agregar un nuevo producto se agrega en la llave 0. Tip: Revisar variable 'nextAvailableKey'
+*[FIXED] Al abrir el choseFile y Cancelar da el error:
+	Uncaught TypeError: Failed to execute 'readAsText' on 'FileReader': parameter 1 is not of type 'Blob'.
+    at HTMLInputElement.leerFichero (script.js:237:12)
+leerFichero @ script.js:237
+*[FIXED] Al Crear de 0 la tabla. Al insertar la primera fila (primera llave), insertar primero la llave 0 o c0.
+*[OK] No permitir la insercion de llaves repetidas en el array llaves. Sustituir las existentes. Se mejoró la interfaz visual para evitar que se cargue un fichero cuando ya existen da
+*[FIXED] En covers.html al insertar el primer cover ocultar los botones de 'Abrir Archivo'
+* Al hacer click en 'Vaciar Tabla' de index.html se vacía todo el localStorage incluidos los datos de los covers. Lograr que se vacíe solo la parte del localStorage correspondiente a la tabla actual.
+*[FIXED] Al cargar el fichero data_covers.csv no agrega la clase 'coverAgotado' a la fila cuyo producto tiene cantidad 0. Solo la agrega al refrescar la página.

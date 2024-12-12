@@ -99,14 +99,10 @@ main p:first-letter {
 	text-shadow:  rgb(0,0,150) 1px 1px 1px;
 }
 
-/*#buttonEditar{
-	align-content: center;
-}*/
-
 table {
     width: 100%;
-    border-collapse: collapse;
-	/* table-layout: fixed;  */
+    border-collapse: collapse;	
+	margin-top: 5px;
 }
 
 th, td {
@@ -114,10 +110,6 @@ th, td {
     padding: 5px;   
     text-align: center;
 }
-
-/* .producto {  /* Para poner en negrita los nombres de los productos*/ /*
-	font-weight: bold;
-} */
 
 th {
     background-color: rgba(7, 7, 7, 0.7);
@@ -218,7 +210,8 @@ dialog h2 {
 
 #modalEditProd button:hover, #modalNuevoProd button:hover, section button:hover {
 	color: #fff;
-	border-radius: 20px;	
+	border-radius: 20px;
+	transition: 0.4s ease-in-out;
 }
 
 .buttonNuevo, #btnAceptarModEditProd, #btnCancelarModEditProd, 
@@ -230,7 +223,7 @@ dialog h2 {
 	background: rgb(252, 83, 83, .7);
 }
 
-.buttonExportar {
+.buttonExportar, .buttonArchivo {
 	background: rgb(9, 224, 9, 0.702);
 }
 
@@ -238,5 +231,14 @@ footer p {
 	text-align: center;
 	font-size: 16px;
 	color: gray;
-	margin-top: 24px;
+	margin: 24px 0;
+}
+
+/* .file-input-container {
+	display: flex;
+	align-items: center;
+} */
+
+.archivo {
+	display: none;
 }

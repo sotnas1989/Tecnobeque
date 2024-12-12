@@ -88,7 +88,7 @@ nav ul li a:hover {     /* uso de la pseudoclase*/
 
 p {
 	text-align: justify;
-	letter-spacing: 1px;
+	letter-spacing: 1px;	
 }
 
 main p:first-letter {
@@ -140,15 +140,10 @@ main h2 {
 	background-color: darkblue;	
 }
 
-
-
-/* #buttonEditar{
-	align-content: center;
-} */
-
 table {
     width: 100%;
-    border-collapse: collapse;    
+    border-collapse: collapse;
+	margin-top: 5px;   
 }
 
 th, td {
@@ -187,8 +182,6 @@ tbody tr td:nth-child(4) { /* Seleccionando toda la columna CANTIDAD*/
 	font-size: x-large;
 	text-shadow: rgb(0,0,150) 1px 1px 1px;
 }
-
-
 
 .agotado { /* Clase del <td> cantidad covers = 0 */ 
 	color: red;
@@ -231,10 +224,116 @@ table button:hover {
 .incremento{
 	background-color: green;
 }
+/* NUEVO */
+/* Estilando modales PRODUCTO */
+#modalEditCov, #modalNuevoCover {
+	background-color: #f8f9fa;
+	border: 1px solid #e9ecef;
+	border-radius: 0.25rem;
+	box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+	color: #212529;
+	font-size: 1rem;	
+	padding: 1rem;
+	position: fixed;
+	margin: auto;
+	z-index: 1000;
+	width: 70%;
+	max-width: 500px;
+}
+
+#modalEditCov::backdrop, #modalNuevoCover::backdrop {
+	background-color: rgba(0, 0, 0, 0.5);	
+    z-index: 999;
+}
+
+dialog h2 {
+	font-style: normal;
+}
+
+#modalEditCov div, #modalNuevoCover div {
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 10px;
+	padding: 3px;
+}
+
+#modalEditCov div.btnContMod {
+	display: flex;
+	justify-content: space-evenly;
+}
+
+#modalNuevoCover div.btnContMod {
+	display: flex;
+	justify-content: space-around;
+}
+
+#modalEditCov input, #modalNuevoCover input {
+	background: #f1ffbf;
+	padding: 3px;
+	outline: 1px solid #686666;
+	border: none;
+	border-radius: 5px;
+	font-size: medium;
+	text-align: center;	
+}
+
+#precCovModalEdit, #precCovModalNuevo {
+	width: 90px;
+	flex: 1;
+	flex-grow: 0;
+}
+
+#covModalEdit, #covModalNuevo {
+	/* width: 300px; */
+	flex: 3;
+	/* flex-grow: 0; */
+}
+
+#cantCovModalEdit, #cantCovModalNuevo {
+	width: 90px;
+	flex: 1;
+	flex-grow: 0;
+}
+
+#modalEditCov button, #modalNuevoCover button, section > button {
+	padding: 10px;
+	margin-top: 10px;
+	border: none;	
+	border-radius: 10px;
+	font-size: medium;
+	font-weight: 600;
+}
+
+#modalEditCov button:hover, #modalNuevoCover button:hover, section > button:hover {
+	color: #fff;
+	border-radius: 20px;
+	transition: 0.4s ease-in-out;
+}
+
+.buttonNuevo, #btnAceptarModEdit, #btnCancelarModEdit, 
+#btnCancelarModNuevo, #btnAceptarModNuevo {
+	background: rgb(16, 132, 240, .7);
+}
+
+.buttonVaciar, #btnEliminarModEdit {
+	background: rgb(252, 83, 83, .7);
+}
+
+.buttonExportar, .buttonArchivo {
+	background: rgb(9, 224, 9, 0.702);
+}
+
+.archivo {
+	display: none;
+}
+
 
 footer p {
 	text-align: center;
 	font-size: 16px;
 	color: gray;
-	margin-top: 24px;
+	margin: 24px 0;
 }

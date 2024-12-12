@@ -1,10 +1,13 @@
 var llaves = new Array(); // Almacena las llaves de los eltos que hay en el localStorage. Muy útil luego de eliminar un producto
-var nextAvailableKey = 0; // Almacena el proximo valor llave para una futura adicion de producto.
+var nextAvailableKey = 1; // Almacena el proximo valor llave para una futura adicion de producto.
 
 //  MANIPULACION DEL DOM. Agrega los eventos a los elementos HTML.
-let inputArchivo = document.getElementsByClassName('archivo');
-inputArchivo[0].addEventListener('change', leerFichero, false); // Evento change del input file tabla arriba
-inputArchivo[1].addEventListener('change', leerFichero, false); // Evento change del input fila tabla abajo
+let inputArchivo = document.querySelector('.archivo');
+inputArchivo.addEventListener('change', leerFichero, false); // Evento change del input file tabla arriba
+const botonArchivo = document.getElementsByClassName("buttonArchivo");
+botonArchivo[0].addEventListener('click', abrirChooseFile, false);
+botonArchivo[1].addEventListener('click', abrirChooseFile, false);
+
 let botonNuevo = document.getElementsByClassName("buttonNuevo");
 botonNuevo[0].addEventListener("click", nuevoProducto, false);
 botonNuevo[1].addEventListener("click", nuevoProducto, false);
@@ -15,6 +18,10 @@ let botonExportar = document.getElementsByClassName("buttonExportar");
 botonExportar[0].addEventListener("click", exportar2, false);
 botonExportar[1].addEventListener("click", exportar2, false);
 window.addEventListener('load', iniciar, false);
+
+function abrirChooseFile() {
+    inputArchivo.click();
+}
 
 // CONFIGURANDO EVENTOS de los botones MODAL 'Editar Producto'
 const modalEditProd = document.getElementById('modalEditProd');
@@ -90,7 +97,7 @@ btnEliminar.addEventListener('click', () => {
     }
 });
 
-// Configurando Eventos de botones MODAL NUEVO PRODUCTO
+//********  Configurando Eventos de botones MODAL NUEVO PRODUCTO
 const modalNuevoP = document.getElementById('modalNuevoProd');
 
 // Boton Cancelar
@@ -151,8 +158,21 @@ btnAceptNuevProd.addEventListener('click', ()=> {
             modalEditProd.showModal();
         });
         // Agregando fila al <tbody>
-        const tBody = document.querySelector("tbody");
+        let tBody = document.querySelector("tbody");
+        if(tBody === null) { // Esta vacio el tbody
+            tBody = document.createElement("tbody");
+            const tabla = document.getElementById("tabla");
+            tabla.append(tBody);
+        }
         tBody.appendChild(trNuevoP);
+        // Si esta vacio las llaves insertar primero la llave 0
+        if(llaves.length === 0) {
+            llaves.push(0);
+            localStorage.setItem("0", "0;PRODUCTO;PRECIO (CUP);DESCRIPCIÓN");
+            // Ocultando botones 'Abrir Archivo'
+            botonArchivo[0].hidden = true;
+            botonArchivo[1].hidden = true;
+        } 
         llaves.push(key); // Agregando llave del nuevo producto
         nextAvailableKey++; // Actualizando key para futuro prod
         // Limpiando inputs del modal para una futura insercion
@@ -171,6 +191,7 @@ btnAceptNuevProd.addEventListener('click', ()=> {
 function crearTabla() {
     if (localStorage.getItem("0") === null) // Si el localStorage no tiene los datos de los productos
     {
+        alert("¡Datos no cargados!\nPor favor carge el archivo: data.csv");
         console.log(`Local storage sin datos de productos!\n llaves[]: ${llaves}`);
         return; // Termina la ejecución. Sin datos no tiene sentido hacer mas
     }
@@ -215,12 +236,13 @@ function leerFichero(evt) {
     reader.onload = (e) => {
         // Cuando el archivo se terminó de cargar
         let fileText = e.target.result; // Texto del fichero data.csv
-        saveToLocalStorage(fileText); // Actualizando localStorage con la nueva información
-        location.reload();
+        saveToLocalStorage(fileText); // Actualizando localStorage con la nueva información        
+
+        // location.reload();
         //crearTabla(e.target.result)
     };
     // Leemos el contenido del archivo seleccionado
-    reader.readAsText(file);
+    if(file) reader.readAsText(file); // el if garantiza que file no sea undefined
 }
 
 /**
@@ -233,11 +255,22 @@ function saveToLocalStorage(data) {
     const todasFilas = data.split(/\r?\n|\r/); // Separando el texto por filas
     for (let f = 0; f < todasFilas.length; f++) {
         let aux = todasFilas[f].split(";");
-        const llave = aux[0]; // La llave del producto es el primer valor que aparece en el fichero
-        llaves.push(parseInt(llave)); // Quiero que el array de llaves almacene valores enteros. 
-        const valor = todasFilas[f];
-        localStorage.setItem(llave, valor);
+        let llave = aux[0]; // La llave del producto es el primer valor que aparece en el fichero
+        llave = parseInt(llave);
+        // Si llave no es numerica, no la agrego
+        if (!isNaN(llave)) {
+            llaves.push(llave);
+            const valor = todasFilas[f];
+            localStorage.setItem(llave, valor);
+        }
+        else {
+            alert('Archivo NO VALIDO.\nPor favor abrir:   Tecnobeque/data.csv');
+            return; // FINAL. El fichero no es el correcto
+        }
     }
+    // Archivo Cargado Exitosamente. Se ocultan los botones 'Abrir Archivo'
+    botonArchivo[0].hidden = true;
+    botonArchivo[1].hidden = true;
     nextAvailableKey = llaves[llaves.length - 1] + 1; // Si la ultima llave almacenada es 20, la proxima sera 21
     crearTabla();
 }
@@ -248,15 +281,6 @@ function saveToLocalStorage(data) {
 function nuevoProducto() {
     const modalNuevoP = document.getElementById("modalNuevoProd");
     modalNuevoP.showModal();
-
-
-    // // Procesando la información
-    // let llave = nextAvailableKey++;
-    // llaves.push(llave);
-    // let valor = `${llave};${nombre};${precio};${descripcion}`;
-    // localStorage.setItem(llave, valor);
-    // location.reload();
-    // iniciar();
 }
 
 function vaciarLocalStorage() {
@@ -264,11 +288,14 @@ function vaciarLocalStorage() {
         alert("La tabla se encuentra ya VACÍA");
         return;
     }
-    inputArchivo[0].hidden = false; // Visualizando nuevamente el input para que se pueda cargar el fichero data_covers.csv
-    inputArchivo[1].hidden = false;
+    // inputArchivo[0].hidden = false; // Visualizando nuevamente el input para que se pueda cargar el fichero data_covers.csv
+    // inputArchivo[1].hidden = false;
+    botonArchivo[0].hidden = false;
+    botonArchivo[1].hidden = false;
+
     localStorage.clear();
     llaves = new Array();
-    nextAvailableKey = 0;
+    nextAvailableKey = 1;
     let tabla = document.getElementById("tabla");
     let nodeTbody = tabla.querySelector("tbody");
     if (nodeTbody !== null) nodeTbody.remove(); // Si existe eliminar el nodo <tbody>    
@@ -322,8 +349,13 @@ function exportar2() {
 function iniciar() {
     if (localStorage.getItem("0") !== null)  // Si el localStorage contiene las llaves de productos (la llave 0 de los productos existe en el localStorage)
     {
-        inputArchivo[0].hidden = true; // Ya existen datos en el local storage. Se oculta los botones del cargar fichero
-        inputArchivo[1].hidden = true;
+        // inputArchivo[0].hidden = true; 
+        // inputArchivo[1].hidden = true;
+
+        // Ya existen datos en el local storage. Se oculta los botones del cargar fichero
+        botonArchivo[0].hidden = true;
+        botonArchivo[1].hidden = true;
+
         if (llaves.length === 0) // Si llaves vacio. Llenarlo
         {
             let key;
@@ -338,9 +370,11 @@ function iniciar() {
     }
     else // LocalStorage no tiene los datos de los productos
     {
-        inputArchivo[0].hidden = false;
-        inputArchivo[1].hidden = false;
+        // inputArchivo[0].hidden = false;
+        // inputArchivo[1].hidden = false;
+        botonArchivo[0].hidden = false;
+        botonArchivo[1].hidden = false;
         llaves = new Array(); // Inizializa el array dejando atras viejos valores   
-        nextAvailableKey = 0; // Como el localStorage esta vacio el proximo elto tendrá llave 0     
+        nextAvailableKey = 1; // Como el localStorage esta vacio el proximo elto tendrá llave 0     
     }
 }
