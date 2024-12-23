@@ -53,7 +53,7 @@
         <button class="buttonVaciar" title="Elimina todos los covers de la tabla">Vaciar Tabla</button>
         <button class="buttonExportar" title="Salva la tabla a un fichero data_covers.csv">Exportar</button>        
         <div id="divTabla">
-            <table id="tabla">
+            <table id="tabla" class="tabla">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -63,6 +63,25 @@
                         <th colspan="2">GESTIÓN</th>
                     </tr>                    
                 </thead>                
+            </table>
+            <br>
+            <br>
+            <table id="tablaTotalCovers" class="tablaTotalCovers">
+                <thead>
+                    <tr>                                                
+                        <th colspan="2">GENERALIDADES COVERS</th>
+                    </tr>                    
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>Total de Covers</b></td>
+                        <td class="totalCov">0</td>
+                    </tr>
+                    <tr>
+                        <td><b>Dinero a Recaudar (CUP)</b></td>
+                        <td class="dineroRecaudar">0</td>
+                    </tr>
+                </tbody>               
             </table>
         </div>        
         <button class="buttonArchivo" title="Cargue el archivo Tecnobeque/data_covers.csv">Abrir Archivo</button>

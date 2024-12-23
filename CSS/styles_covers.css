@@ -28,7 +28,7 @@ body {
 }
 
  .banner_text {		
-    font-size: 60px;
+    font-size: min(5rem,10vw);	
 	max-width: 100%;	
 	width: fit-content;
 	height: fit-content;

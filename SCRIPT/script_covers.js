@@ -17,6 +17,7 @@ botonVaciar[1].addEventListener("click", vaciarLocalStorage, false);
 let botonExportar = document.getElementsByClassName("buttonExportar");
 botonExportar[0].addEventListener("click", exportar2, false);
 botonExportar[1].addEventListener("click", exportar2, false);
+
 window.addEventListener('load', iniciar, false);
 
 /**
@@ -87,6 +88,7 @@ btnAceptarEdit.addEventListener('click', () => {
            else tr.removeAttribute("class");
            let clase = claseSegunCantidad(parseInt(cantidad.value));
            tr.children[3].setAttribute("class", clase);
+           calcularTotales(); // Actualizando la tabla totales         
            break;
         }
     }
@@ -116,6 +118,8 @@ btnEliminar.addEventListener('click', () => {
                 // Accediendo a toda la fila (nodo padre)
                 const tr = td.parentElement;                
                 tr.parentElement.removeChild(tr); // Eliminando producto del DOM. No reload de pagina
+                calcularTotales(); // Actualizando la tabla totales          
+
                 break;
             }
         }
@@ -229,6 +233,7 @@ btnAceptNuevCov.addEventListener('click', ()=> {
     // Salvando data en el localStorage
     let valor = `${key};${cover.value};${precio.value};${cant}`;
     localStorage.setItem(key,valor);    
+    calcularTotales(); // Actualizando la tabla totales          
     
     modalNuevCov.close();
 });
@@ -257,6 +262,8 @@ function agregarEventosBtnMenos(nuevoCover, btnMenos, key) {
             if(cantidad === 0) {
                 nuevoCover.setAttribute("class","coverAgotado"); // Agregando la clase para que en el CSS se sombree toda esa fila
             }
+            calcularTotales(); // Actualizando la tabla totales          
+
         }
         else // Cantidad es 0
         {
@@ -285,6 +292,8 @@ function agregarEventosBtnMas(nuevoCover, btnMas, key) {
         // Actualizando el color de celda cantidad
         let clase = claseSegunCantidad(cantidad);
         celdas[3].setAttribute("class", clase);
+        calcularTotales(); // Actualizando la tabla totales          
+
     });
 }
 
@@ -304,9 +313,9 @@ function agregarEventosFila(nuevoCover, key) {
         modalEditCov.setAttribute("llave", key);
         // Llenando modal con info del producto
         textoH2.textContent = `Editar Cover #${key.substring(1)}`; // Agregando #cov al modal
-        cover.value = celdas[1];
-        precio.value = celdas[2];
-        cantidad.value = celdas[3];
+        cover.value = celdas[1].textContent;
+        precio.value = celdas[2].textContent;
+        cantidad.value = celdas[3].textContent;
         modalEditCov.showModal();
     });
 }
@@ -334,16 +343,14 @@ function iniciar()
         }         
         let parteNumericaLlave = parseInt(llaves[llaves.length-1].substring(1)); // Obteniendo la parte numerica de la ultima llava eje: c17 ---> 17
         nextAvailableKey = "c" + (parteNumericaLlave + 1); // Si la ultima llave almacenada es c20, la proxima sera c21
-        crearTabla();
-        
+        crearTabla();        
+
         // Manipulando el DOM para agregar los eventListeners a los botones - y +
         addEventListenerBotonesEdicion();
         
     }
     else // LocalStorage no tiene los datos de los productos
     {
-        // inputArchivo[0].hidden = false;
-        // inputArchivo[1].hidden = false;
         botonArchivo[0].hidden = false;
         botonArchivo[1].hidden = false;
         llaves = new Array(); // Inizializa el array dejando atras viejos valores   
@@ -375,7 +382,7 @@ function sortLlavesCovers(llaves)
 
 function addEventListenerBotonesEdicion() 
 {
-    let filas = document.querySelectorAll("tr"); // Todas las filas de la tabla <tr>
+    let filas = document.querySelectorAll("#tabla tr"); // Todas las filas de la tabla <tr>
     for (let f = 1; f < filas.length; f++) // Recorriendo fila por fila a partir de la fila 1. La 0 es el <th> y no se itera
     {
         let filaActual = filas[f]; // Fila en la posición f
@@ -400,7 +407,7 @@ function addEventListenerBotonesEdicion()
             cantidad = parseInt(celdas[3].innerHTML);
             if(cantidad > 0)
             {                
-                cantidad--;
+                cantidad--;                
                 localStorage[key] = `${key};${cover};${precio};${cantidad}`;
                 celdas[3].innerHTML = cantidad; // Actualizando la celda cantidad con el nuevo valor
                 // Actualizando el color de celda cantidad
@@ -409,7 +416,8 @@ function addEventListenerBotonesEdicion()
                 if(cantidad === 0) // El cover se agotó
                 {
                     filaActual.setAttribute("class","coverAgotado"); // Agregando la clase para que en el CSS se sombree toda esa fila
-                }                
+                }
+                calcularTotales(); // Actualizando la tabla totales          
             }
             else // Cantidad es 0
             {
@@ -433,13 +441,16 @@ function addEventListenerBotonesEdicion()
             if(cantidad === 1)
             {
                 filaActual.removeAttribute("class"); // El producto dejó de estar agotado
-            }            
+            }      
+            calcularTotales(); // Actualizando la tabla totales
         }) ;        
     }
 }
 
 /**
- * Crea el nodo TBODY a partir de la data que que se encuentra en el localStorage y lo agrega a TABLE
+ * Crea el contenido de las tablas del documento interactuando con la información del localStorage.
+ * Crea el nodo TBODY a partir de la data que que se encuentra en el localStorage y lo agrega a TABLE.
+ * Calcula los totales de la tabla 'tablaTotalCovers'
  */
 function crearTabla() 
 {   
@@ -509,7 +520,29 @@ function crearTabla()
         });
         tBody.appendChild(tr); // Agregando row
     }
-    tabla.appendChild(tBody); // Agregando tbody a la la tabla        
+    tabla.appendChild(tBody); // Agregando tbody a la la tabla
+    
+    // CALCULANDO LOS TOTALES PARA LA TABLA tablaTotalCovers
+    calcularTotales();
+}
+
+/**
+ * Calcula los totales y los agrega a la tabla de totales.
+ */
+function calcularTotales() {
+    const celdasCantCov = document.querySelectorAll("table#tabla tbody tr td:nth-child(4)");
+    const tdTotCov = document.querySelector("table#tablaTotalCovers td.totalCov");
+    const tdDinero = document.querySelector("table#tablaTotalCovers td.dineroRecaudar");
+    let totalCantidad = 0; // Cantidad total de covers
+    let dineroTotal = 0; // Todo el dinero que va a recaudar todos los covers
+    for (let i = 0; i < celdasCantCov.length; i++) {
+        const celdaCantidad = celdasCantCov[i];
+        const celdaPrecio = celdaCantidad.previousElementSibling;
+        totalCantidad += parseInt(celdaCantidad.textContent);
+        dineroTotal += parseInt(celdaCantidad.textContent) * parseInt(celdaPrecio.textContent);        
+    }
+    tdTotCov.textContent = totalCantidad;
+    tdDinero.textContent = dineroTotal;
 }
 
 /**
@@ -585,6 +618,8 @@ function saveToLocalStorage(data)
     let parteNumericaLlave = parseInt(llaves[llaves.length-1].substring(1)); // Obteniendo la parte numerica de la ultima llava eje: c17 ---> 17
     nextAvailableKey = "c" + (parteNumericaLlave + 1); // Si la ultima llave almacenada es c20, la proxima sera c21
     crearTabla();
+    // Manipulando el DOM para agregar los eventListeners a los botones - y +
+    addEventListenerBotonesEdicion();
 }
 
 /**
@@ -633,24 +668,26 @@ function localStorageToString()
     return result;
 }
 
-function vaciarLocalStorage()
-{
-    if(localStorage.length === 0)
-    {
+function vaciarLocalStorage() {
+
+    if (llaves.length === 0) {
         alert("La tabla se encuentra ya VACÍA");
         return;
     }
-    // inputArchivo[0].hidden = false; // Visualizando nuevamente el input para que se pueda cargar el fichero data_covers.csv
-    // inputArchivo[1].hidden = false;
-    botonArchivo[0].hidden = false;
-    botonArchivo[1].hidden = false;
-
-    localStorage.clear();
-    llaves = new Array();
-    nextAvailableKey = "c1";
-    let tabla = document.getElementById("tabla");
-    let nodeTbody = tabla.querySelector("tbody");
-    if(nodeTbody !== null) nodeTbody.remove(); // Si existe eliminar el nodo <tbody>    
+    if (confirm("¿Está usted seguro de VACIAR LA TABLA?\nLos datos se PERDERAN PERMANENTEMENTE.")) {
+        botonArchivo[0].hidden = false;
+        botonArchivo[1].hidden = false;
+        // Se recorren todas las llaves de covers y se eliminan del localStorage
+        llaves.forEach(key => {
+            localStorage.removeItem(key);
+        });
+        llaves = new Array();
+        nextAvailableKey = "c1";
+        let tabla = document.getElementById("tabla");
+        let nodeTbody = tabla.querySelector("tbody");
+        if (nodeTbody !== null) nodeTbody.remove(); // Si existe eliminar el nodo <tbody> 
+        calcularTotales(); // Actualizando la tabla totales   
+    }
 }
 
 /**

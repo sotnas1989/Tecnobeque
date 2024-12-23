@@ -284,21 +284,24 @@ function nuevoProducto() {
 }
 
 function vaciarLocalStorage() {
-    if (localStorage.length === 0) {
+    if (llaves.length === 0) {
         alert("La tabla se encuentra ya VACÍA");
         return;
     }
-    // inputArchivo[0].hidden = false; // Visualizando nuevamente el input para que se pueda cargar el fichero data_covers.csv
-    // inputArchivo[1].hidden = false;
-    botonArchivo[0].hidden = false;
-    botonArchivo[1].hidden = false;
-
-    localStorage.clear();
-    llaves = new Array();
-    nextAvailableKey = 1;
-    let tabla = document.getElementById("tabla");
-    let nodeTbody = tabla.querySelector("tbody");
-    if (nodeTbody !== null) nodeTbody.remove(); // Si existe eliminar el nodo <tbody>    
+    if (confirm("¿Está usted seguro de VACIAR LA TABLA?\nLos datos se PERDERAN PERMANENTEMENTE.")) {
+        botonArchivo[0].hidden = false;
+        botonArchivo[1].hidden = false;
+        // Por cada llave de producto eliminarla del localStorage
+        llaves.forEach(key => {
+            localStorage.removeItem(key);
+        });
+        llaves = new Array();
+        nextAvailableKey = 1;
+        let tabla = document.getElementById("tabla");
+        let nodeTbody = tabla.querySelector("tbody");
+        if (nodeTbody !== null) nodeTbody.remove(); // Si existe eliminar el nodo <tbody>
+    }
+        
 }
 
 /** 
