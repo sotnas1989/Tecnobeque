@@ -37,4 +37,4 @@ Al abrir la aplicación por primera vez es necesario cargar los ficheros **data.
 Cargar fichero _**data.csv**_ en _**index.html**_
 
 ![cargar_data.csv](_res/load_data_covers.png)
-Cargar fichero _**data_covers.csv**_ en _**index.html**_
+Cargar fichero _**data_covers.csv**_ en _**covers.html**_
