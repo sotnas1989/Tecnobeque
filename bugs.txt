@@ -92,5 +92,6 @@ leerFichero @ script.js:237
 *[OK] Agregar tabla de total de covers.
 *[FIXED] Al cargar el fichero de los covers y hacer click en una en  botones (+) o (-) no disminuye la cantidad, sólo muestra el modal de editar cover.
 *[FIXED] Que la tabla de los totales se actualize luego de un cambio en la cantidad de covers.
-* Agregar 'Total de Dinero A Generar' en la tabla GENERALIDADES COVER. Calcular Ʃcover*cantidad
+*[OK] Agregar 'Total de Dinero A Generar' en la tabla GENERALIDADES COVER. Calcular Ʃcover*cantidad
 *[FIXED] Luego de una insercion de cover al hacer clic en la fila del cover se muestra en el modalEditCov '[object HTMLTableCellElement]'. Faltaba aplicar .textContent
+* Agregar Notificaciones para las operaciones CRUD.
